@@ -1,0 +1,373 @@
+*{
+    padding: 0%;
+    margin: 0;
+}
+.document {
+        border: 0px solid black;
+        background-color: rgb(255, 255, 255);
+        height: 900px;
+    }
+
+
+.mid{
+    width: 98%;
+    height: 90%;
+    border: 0px solid black;
+    margin: auto;
+    display: flex;
+    gap: 10px;
+    margin-top: 2%;
+}  
+
+
+#mid1{
+    width: 25%;
+    height: auto;
+    background-color: rgb(242, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;   
+    /* overflow-x: auto;
+    white-space: nowrap; */
+}
+
+.table {
+width: auto;
+}
+
+#mid2 {
+max-width: 100%;
+overflow-x: auto;
+}
+
+.table {
+white-space: nowrap;
+}
+
+th, td {
+min-width: 150px; /* Set a minimum width for each column */
+}
+
+
+#mid2{
+    width: 80%;
+    background-color: rgb(242, 255, 255);
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;    
+    padding: 2%;
+}
+
+#username {
+    font-family:cursive;
+    color: #007bff;
+  }
+
+#addstudent{
+    color: white;
+    border: 0px solid white;
+    background-color: #115299;
+    margin-right: 4%;
+}
+
+
+
+#downloadRep{
+    margin-left: 24%;
+}
+
+
+
+
+
+
+
+
+/* Filter */
+
+#filterDiv{
+    width: 100%;
+    /* margin-top: 10px; */
+}
+
+
+
+/* Add this to your existing CSS or create a new CSS file */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+#filtersForm {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#filtersForm:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+.form-select:focus,
+.form-input:focus {
+    border: 2px solid #3498db;
+    outline: none;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #2073b3;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Add additional styles for date inputs as needed */
+/* Additional styles for date inputs */
+
+/* Styling date inputs */
+input[type="date"] {
+    width: calc(100% - 22px); /* Adjust width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+/* Focus styles for date inputs */
+input[type="date"]:focus {
+    border: 2px solid #3498db;
+    outline: none;
+}
+
+/* Styling the Apply Filters and Reset button */
+#applyFilters,
+#resetFilters {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-right: 10px;
+}
+
+#resetFilters {
+    background-color: #e74c3c; /* Red color for reset button */
+}
+
+#applyFilters:hover,
+#resetFilters:hover {
+    background-color: #2073b3;
+}
+
+#applyFilters:active,
+#resetFilters:active {
+    transform: scale(0.95);
+}
+
+
+
+/* Add this CSS to your stylesheet */
+
+/* Modal Styling */
+#addStudentModal {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  /* Form Styling */
+  .form-label {
+    font-weight: bold;
+  }
+  
+  .form-control {
+    margin-bottom: 15px;
+  }
+  
+  /* Select Styling */
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
+  
+  /* Button Styling */
+  .btn-primary {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border: 1px solid #0056b3;
+    color: #fff;
+  }
+  
+  /* Optional: Add animation effects */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .modal-content {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+
+  /* Color theme */
+:root {
+  --primary-color: #FF6F61;
+  --secondary-color: #6B5B95;
+  --text-color: #2C3E50;
+}
+
+/* Button styling */
+.btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+/* Primary button */
+.btn-outline-primary {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Secondary button */
+.btn-outline-secondary {
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+/* Form label */
+.form-label {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Form input styling */
+input[type="date"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Animated effect on hover for form elements */
+input[type="date"]:hover,
+input[type="number"]:hover,
+select:hover {
+  transform: translateY(-3px);
+}
+
+/* Calendar styling */
+/* input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  color: var(--primary-color);
+} */
+
+/* Styling for placeholder text */
+::placeholder {
+  color: #999;
+}
+
+/* Styling for the reset button */
+[type="reset"] {
+  font-size: 1rem;
+  background-color: #ddd;
+  color: var(--text-color);
+  border: none;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+[type="reset"]:hover {
+  background-color: #ccc;
+}

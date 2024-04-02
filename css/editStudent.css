@@ -1,0 +1,83 @@
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  /* Form Styles */
+  #modalForm {
+    width: 80%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  #modalForm div {
+    margin-bottom: 20px;
+  }
+  
+  #modalForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  #modalForm input[type="text"],
+  #modalForm input[type="email"],
+  #modalForm input[type="tel"],
+  #modalForm input[type="date"],
+  #modalForm input[type="number"],
+  #modalForm textarea,
+  #modalForm select {
+    width: calc(100% - 12px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  #modalForm select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 10l5 5 5-5H7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: center;
+  }
+  
+  #modalForm select option {
+    font-size: 16px;
+  }
+  
+  #modalForm input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  #modalForm input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Date Input */
+  #modalForm input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.6);
+  }
+  
+  /* Responsiveness */
+  @media screen and (max-width: 768px) {
+    #modalForm {
+      width: 90%;
+    }
+  }
+  
+
+  

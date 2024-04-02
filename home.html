@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <title>DashBoard</title>
+   <link rel="stylesheet" href="./css/home.css">
+</head>
+
+<body>
+    <div id="document">
+        <div class="spinner-container" id="spinnerContainer">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./home.html"><img src="./photos/sensationz.png" alt="logo"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <h2 id="username"></h2>
+                        </li>
+                    </ul>
+                    <button id="login-btn" class="btn btn-outline-success">Login</button>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        
+        <h3 id="heading">This Month's Fee_Due</h3>
+        
+        <div id="mid_section">
+            <div id="left_mid" class="left-mid-content">
+                <div class="navbar">
+                    <button class="download-btn" id="downloadBtn">Download Reports</button>
+                    <div id="dateRangePicker" class="date-range-picker">
+                      <input type="text" name="dates" id="datePickerInput" placeholder="Select Date Range">
+                  </div>
+                </div>
+                <div class="tabular-data" id="tabularData">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr id="tableHeaders">
+                          <!-- Header cells go here -->
+                      </tr>
+                  </thead>
+                  <tbody id="tableBody">
+                      <!-- Data rows go here -->
+                  </tbody>
+                    </tbody>
+                </table>
+                    <!-- Your tabular data content goes here -->
+                </div>
+            </div>
+            
+            <div id="right_mid" class="right-mid-content">
+                <div id="users" class="right-mid-item">
+                    <span class="icon">👤</span> Users
+                </div>
+                <div id="allStudents" class="right-mid-item">
+                    <span class="icon">📚</span> All Student's Data
+                </div>
+        </div>
+
+        <div id="tokenExpiredModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p id="tokenExpiredReason">Token has expired! Please log in again.</p>
+              <button id="loginAgainBtn">Login Again</button>
+            </div>
+          </div>
+          
+        
+        <script src="./scripts/home.js"></script>
+            
+    </div>
+</body>
+</html>
