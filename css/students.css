@@ -345,13 +345,7 @@ select:hover {
   transform: translateY(-3px);
 }
 
-/* Calendar styling */
-/* input[type="date"]::-webkit-calendar-picker-indicator {
-  background: transparent;
-  color: var(--primary-color);
-} */
 
-/* Styling for placeholder text */
 ::placeholder {
   color: #999;
 }
@@ -370,4 +364,9 @@ select:hover {
 
 [type="reset"]:hover {
   background-color: #ccc;
+}
+
+
+.modal-backdrop {
+  z-index: 1040; /* Change this value as needed */
 }

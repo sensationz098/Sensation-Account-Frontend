@@ -1,8 +1,61 @@
 let userToken = JSON.parse(localStorage.getItem('Data'))
    let token = userToken.token
 
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
 
+
+  document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const contactInput = document.getElementById('contact');
+    const courseStartDateInput = document.getElementById('courseStartDate2');
+    const courseEndDateInput = document.getElementById('courseEndDate2');
+    const dateOfPaymentInput = document.getElementById('date_of_payment');
+    const stateInput = document.getElementById('state');
+    const feeInput = document.getElementById('fee');
+    const courseDurationInput = document.getElementById('CourseDuration');
+
+    if (
+        nameInput.value.trim() === '' ||
+        emailInput.value.trim() === '' ||
+        contactInput.value.trim() === '' ||
+        courseStartDateInput.value.trim() === '' ||
+        courseEndDateInput.value.trim() === '' ||
+        dateOfPaymentInput.value.trim() === '' ||
+        stateInput.value.trim() === '' ||
+        feeInput.value.trim() === '' ||
+        courseDurationInput.value.trim() === '' ||
+        contactInput.value.trim().length < 10
+    ) {
+        alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
+        return; // Return to prevent further execution
+    }
+
+    await addStudent();
+
+    const addStudentModal = document.getElementById('addStudentModal');
+    const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+    modalInstance.hide(); // Hide the modal upon successful addition
+});
+
+
+// Add student modal ke close button ke liye event listener
+document.getElementById('addStudentCloseBtn').addEventListener('click', function () {
+  const addStudentModal = document.getElementById('addStudentModal');
+  const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+  modalInstance.hide();
+});
+
+// Add student modal hide event par background ko unlock karne ke liye event listener
+document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
+  const modalBackdrop = document.querySelector('.modal-backdrop');
+  if (modalBackdrop) {
+      modalBackdrop.remove(); // Modal backdrop element ko remove karein
+  }
+  document.body.style.overflow = 'auto'; // Scroll lock ko unset karein
+});
 
 const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
@@ -15,10 +68,6 @@ const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     }
 
 
-document.getElementById('addStudentForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      addStudent();
-});
 
 
 // Fetch users for checkboxes when the page loads
@@ -27,7 +76,7 @@ fetchUsersForCheckboxes();
     fetchUsers();
     // Fetch and display initial student data
     fetchStudents();
-})
+// })
 
 
     // Attach event listeners to form and button
@@ -38,7 +87,7 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
 
 
 
-    document.getElementById('downloadRep').addEventListener('click', async () => {
+document.getElementById('downloadRep').addEventListener('click', async () => {
       console.log('Download button Clicked!');
     
       try {
@@ -63,14 +112,36 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
   
 
 
+  function calculateEndDate() {
+  // Get the course start date and duration from the form
+  const startDateString = document.getElementById('courseStartDate2').value;
+  const durationInMonths = parseInt(document.getElementById('CourseDuration').value);
+
+  // Convert start date string to Date object
+  const startDate = new Date(startDateString);
+
+  // Calculate course end date based on start date and duration
+  const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + durationInMonths, startDate.getDate());
+
+  // Format the end date as YYYY-MM-DD
+  const formattedEndDate = endDate.toISOString().split('T')[0];
+
+  // Set the calculated end date in the form
+  document.getElementById('courseEndDate2').value = formattedEndDate;
+}
+
+// Add event listener to trigger calculation when either course start date or duration changes
+document.getElementById('courseStartDate2').addEventListener('change', calculateEndDate);
+document.getElementById('CourseDuration').addEventListener('input', calculateEndDate);
+
 
   async function addStudent() {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
+    const countryCodeInput = document.getElementById('countryCode'); // New line to get country code
     const contactInput = document.getElementById('contact');
     const assignedUserInput = document.getElementById('assignedUser2');
     const selectCourseInput = document.getElementById('selectCourse');
-    const batchInput = document.getElementById('batch');
     const timingInput = document.getElementById('timing');
     const courseStartDateInput = document.getElementById('courseStartDate2');
     const courseEndDateInput = document.getElementById('courseEndDate2');
@@ -80,14 +151,15 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
     const courseDurationInput = document.getElementById('CourseDuration');
     const isLifetimeInput = document.getElementById('isLifetime');
 
-    // Create an object to store form values
+    const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
+
     const formValues = {
         name: nameInput.value,
         email: emailInput.value,
-        contact: contactInput.value,
+        contact: contactValue, // Use the concatenated value
         assignedUserId: assignedUserInput.value,
         course: selectCourseInput.value,
-        batch: batchInput.value,
+        // batch: batchInput.value,
         timing: timingInput.value,
         date_of_payment: dateOfPaymentInput.value,
         state: state.value,
@@ -103,7 +175,7 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
 
     try {
         // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-        const response = await fetch('https://final-backend-mark1-2.onrender.com/user/student/add', {
+        const response = await fetch('http://localhost:9090/user/student/add', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -131,6 +203,7 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
 }
 
 
+
 async function applyFilters() {
   const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
   console.log('Selected User IDs:', selectedUserIds);
@@ -150,7 +223,7 @@ async function applyFilters() {
 async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', download = false) {
     // Prepare query parameters
     // const userIdsParam = selectedUserIds.join(',')
-    let queryParams = `https://final-backend-mark1-2.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}`;
+    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -164,7 +237,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         let studentData = data.students;
         const assignedUserIds = studentData.map(student => student.assignedUserId);
         console.log(assignedUserIds);
-        const userNameResponse = await fetch(`https://final-backend-mark1-2.onrender.com/user/allusers?id=${assignedUserIds.join(',')}`,{
+        const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${assignedUserIds.join(',')}`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -231,7 +304,7 @@ async function triggerDownload(data) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('https://final-backend-mark1-2.onrender.com/user/allusers', {
+      const response = await fetch('http://localhost:9090/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -267,7 +340,7 @@ async function fetchUsers() {
 // Function to fetch users for checkboxes
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('https://final-backend-mark1-2.onrender.com/user/allusers', {
+        const response = await fetch('http://localhost:9090/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -331,7 +404,7 @@ async function handleExtendCourseButtonClick(studentId) {
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
-      const response = await fetch(`https://final-backend-mark1-2.onrender.com/user/student/${studentId}`,{
+      const response = await fetch(`http://localhost:9090/user/student/${studentId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -374,7 +447,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
   try {
       // Send PUT request to extend the course
-      const response = await fetch(`https://final-backend-mark1-2.onrender.com/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -581,7 +654,7 @@ function handleDeleteButtonClick(studentId) {
     // Confirm with the user before deleting the student
     if (confirm('Are you sure you want to delete this student?')) {
         // Send DELETE request to the server
-        fetch(`https://final-backend-mark1-2.onrender.com/user/student/delete/${studentId}`, {
+        fetch(`http://localhost:9090/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

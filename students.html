@@ -11,10 +11,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-
-
     <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
@@ -135,14 +132,6 @@
                     <option value="faceyoga">Face Yoga</option>
                 </select>
             </div>
-            
-
-              <!-- <div class="mb-3">
-                <label for="creationDate" class="form-label"
-                  >Creation Date:</label
-                >
-                <input type="date" id="creationDate" name="creationDate" />
-              </div> -->
 
               <div class="mb-3">
                 <label for="courseFee" class="form-label"
@@ -200,7 +189,7 @@
                 <h5 class="modal-title" id="addStudentModalLabel">
                   Add Student
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="addStudentCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <form id="addStudentForm">
@@ -219,17 +208,69 @@
                       required
                     />
                   </div>
+
+
                   <div class="mb-3">
                     <label for="contact" class="form-label">Contact:</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="contact"
-                      name="contact"
-                      maxlength="10"
-                      required
-                    />
-                  </div>
+                    <div class="input-group">
+                      <select class="form-select" id="countryCode" name="countryCode">
+                        <option value="+91">+91 (India)</option>
+                        <option value="+61">+61 (Australia)</option>
+                        <option value="+973">+973 (Bahrain)</option>
+                        <option value="+55">+55 (Brazil)</option>
+                        <option value="+86">+86 (China)</option>
+                        <option value="+20">+20 (Egypt)</option>
+                        <option value="+251">+251 (Ethiopia)</option>
+                        <option value="+33">+33 (France)</option>
+                        <option value="+49">+49 (Germany)</option>
+                        <option value="+62">+62 (Indonesia)</option>
+                        <option value="+964">+964 (Iraq)</option>
+                        <option value="+98">+98 (Iran)</option>
+                        <option value="+972">+972 (Israel)</option>
+                        <option value="+81">+81 (Japan)</option>
+                        <option value="+965">+965 (Kuwait)</option>
+                        <option value="+961">+961 (Lebanon)</option>
+                        <option value="+218">+218 (Libya)</option>
+                        <option value="+60">+60 (Malaysia)</option>
+                        <option value="+356">+356 (Malta)</option>
+                        <option value="+212">+212 (Morocco)</option>
+                        <option value="+64">+64 (New Zealand)</option>
+                        <option value="+234">+234 (Nigeria)</option>
+                        <option value="+92">+92 (Pakistan)</option>
+                        <option value="+51">+51 (Peru)</option>
+                        <option value="+63">+63 (Philippines)</option>
+                        <option value="+7">+7 (Russia)</option>
+                        <option value="+966">+966 (Saudi Arabia)</option>
+                        <option value="+65">+65 (Singapore)</option>
+                        <option value="+27">+27 (South Africa)</option>
+                        <option value="+82">+82 (South Korea)</option>
+                        <option value="+34">+34 (Spain)</option>
+                        <option value="+46">+46 (Sweden)</option>
+                        <option value="+41">+41 (Switzerland)</option>
+                        <option value="+66">+66 (Thailand)</option>
+                        <option value="+90">+90 (Turkey)</option>
+                        <option value="+971">+971 (United Arab Emirates)</option>
+                        <option value="+44">+44 (United Kingdom)</option>
+                        <option value="+1">+1 (United States)</option>
+                        <option value="+58">+58 (Venezuela)</option>
+                        <option value="+84">+84 (Vietnam)</option>
+                        <option value="+260">+260 (Zambia)</option>
+                        <option value="+263">+263 (Zimbabwe)</option>
+                    </select>
+                        <input
+                            type="tel"
+                            class="form-control"
+                            id="contact"
+                            name="contact"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            required
+                        />
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a 10-digit number.
+                    </div>
+                </div>              
                   <div class="mb-3">
                     <label for="contact" class="form-label">Assigned User:</label>
                    <select name="assignedUser3" id="assignedUser2">
@@ -249,24 +290,26 @@
                     </select>
                   </div>
                   <div class="mb-3">
-                    <label for="batch" class="form-label">Batch:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="batch"
-                      name="batch"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
                     <label for="timing" class="form-label">Timing:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="timing"
-                      name="timing"
-                    />
-                  </div>
+                    <select class="form-select" id="timing" name="timing">
+                        <option value="5-6 am (Morning)">5-6 am (Morning)</option>
+                        <option value="6-7 am (Morning)">6-7 am (Morning)</option>
+                        <option value="7-8 am (Morning)">7-8 am (Morning)</option>
+                        <option value="8-9 am (Morning)">8-9 am (Morning)</option>
+                        <option value="9-10 am (Morning)">9-10 am (Morning)</option>
+                        <option value="10-11 am (Morning)">10-11 am (Morning)</option>
+                        <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
+                        <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
+                        <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
+                        <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
+                        <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
+                        <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
+                        <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
+                        <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
+                        <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
+                        <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
+                    </select>
+                </div>
                   <div class="mb-3">
                     <label for="date_of_payment" class="form-label"
                       >Date of Payment:</label
@@ -292,6 +335,17 @@
                     />
                   </div>
                   <div class="mb-3">
+                    <label for="CourseDuration" class="form-label"
+                      >Course Duration:</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="CourseDuration"
+                      name="CourseDuration"
+                    />
+                  </div>
+                  <div class="mb-3">
                     <label for="courseEndDate" class="form-label"
                       >Course End Date:</label
                     >
@@ -314,65 +368,61 @@
                     />
                   </div>
                   <div class="mb-3">
-                    <label for="CourseDuration" class="form-label"
-                      >Course Duration:</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="CourseDuration"
-                      name="CourseDuration"
-                    />
-                  </div>
-
-                  <div class="mb-3">
                     <label for="lifetime" class="form-label">Is Lifetime:</label>
                     <select name="lifetime" id="isLifetime">
                       <option value="true">True</option>
                       <option value="false">False</option>
                     </select>
                   </div>
-                  
-
                   <div class="mb-3">
-                    <label for="state" class="form-label"
-                      >State:</label
-                    >
+                    <label for="state" class="form-label">State:</label>
                     <select name="state" id="state">
-                      <option value="Andhra Pradesh">Andhra Pradesh</option>
-                      <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                      <option value="Assam">Assam</option>
-                      <option value="Bihar">Bihar</option>
-                      <option value="Chhattisgarh">Chhattisgarh</option>
-                      <option value="Goa">Goa</option>
-                      <option value="Gujarat">Gujarat</option>
-                      <option value="Haryana">Haryana</option>
-                      <option value="Himachal Pradesh">Himachal Pradesh</option>
-                      <option value="Jharkhand">Jharkhand</option>
-                      <option value="Karnataka">Karnataka</option>
-                      <option value="Kerala">Kerala</option>
-                      <option value="Madhya Pradesh">Madhya Pradesh</option>
-                      <option value="Maharashtra">Maharashtra</option>
-                      <option value="Manipur">Manipur</option>
-                      <option value="Meghalaya">Meghalaya</option>
-                      <option value="Mizoram">Mizoram</option>
-                      <option value="Nagaland">Nagaland</option>
-                      <option value="Odisha">Odisha</option>
-                      <option value="Punjab">Punjab</option>
-                      <option value="Rajasthan">Rajasthan</option>
-                      <option value="Sikkim">Sikkim</option>
-                      <option value="Tamil Nadu">Tamil Nadu</option>
-                      <option value="Telangana">Telangana</option>
-                      <option value="Tripura">Tripura</option>
-                      <option value="Uttar Pradesh">Uttar Pradesh</option>
-                      <option value="Uttarakhand">Uttarakhand</option>
-                      <option value="West Bengal">West Bengal</option>
+                        <option value="">Select State/UT</option>
+                        <optgroup label="States">
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                        </optgroup>
+                        <optgroup label="Union Territories">
+                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Lakshadweep">Lakshadweep</option>
+                            <option value="Ladakh">Ladakh</option>
+                            <option value="Puducherry">Puducherry</option>
+                        </optgroup>
                     </select>
-                    
-                  </div>
+                </div>
+                
 
                   <button
-                  id="addStudent"
+                  id="addStudent2"
                   class="btn btn-outline-success"
                   data-bs-toggle="modal"
                   data-bs-target="#addStudentModal"
@@ -387,8 +437,7 @@
         </div>
 
 
-
-<div class="modal fade" id="extendCourseModal" tabindex="-1" role="dialog" aria-labelledby="extendCourseModalLabel" aria-hidden="true">
+        <div class="modal fade" id="extendCourseModal" tabindex="-1" role="dialog" aria-labelledby="extendCourseModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -414,7 +463,7 @@
       </div>
     </div>
   </div>
-</div>
+        </div>
 
 
       </div>

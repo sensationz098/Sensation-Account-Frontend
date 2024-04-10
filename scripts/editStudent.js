@@ -24,7 +24,7 @@ const assignedUserId = studentData.assignedUserId || '';
 
 // Fetch assigned users from the API
 try {
-  const response = await fetch(`https://final-backend-mark1-2.onrender.com/user/allusers`, {
+  const response = await fetch(`http://localhost:9090/user/allusers`, {
       headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -82,7 +82,7 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
   };
 
   try {
-      const response = await fetch(`https://final-backend-mark1-2.onrender.com/user/student/edit/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/edit/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
