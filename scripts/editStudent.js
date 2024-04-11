@@ -9,7 +9,7 @@ document.getElementById('editName').value = studentData.name || '';
 document.getElementById('editEmail').value = studentData.email || '';
 document.getElementById('editContact').value = studentData.contact || '';
 document.getElementById('editCourse').value = studentData.course || '';
-document.getElementById('editBatch').value = studentData.batch || '';
+// document.getElementById('editBatch').value = studentData.batch || '';
 document.getElementById('editTiming').value = studentData.timing || '';
 document.getElementById('editCourseStartDate').value = formatDate(studentData.courseStartDate) || '';
 document.getElementById('editCourseEndDate').value = formatDate(studentData.courseEndDate) || '';
@@ -70,7 +70,6 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
       email: document.getElementById('editEmail').value,
       contact: document.getElementById('editContact').value,
       course: document.getElementById('editCourse').value,
-      batch: document.getElementById('editBatch').value,
       assignedUserId: document.getElementById('editAssignedUser').value, // Change key to assignedUserId
       timing: document.getElementById('editTiming').value,
       date_of_payment: document.getElementById('editDateOfPayment').value,

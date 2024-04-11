@@ -1,7 +1,7 @@
 let userToken = JSON.parse(localStorage.getItem('Data'))
    let token = userToken.token
 
-// document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
 
   document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
@@ -76,7 +76,7 @@ fetchUsersForCheckboxes();
     fetchUsers();
     // Fetch and display initial student data
     fetchStudents();
-// })
+})
 
 
     // Attach event listeners to form and button
@@ -475,8 +475,6 @@ async function extendCourse(studentId, additionalMonths, amount, date_of_payment
       console.error('Error extending course:', error);
   }
 }
-
-
 
 
 function displayStudents(students, download) {
