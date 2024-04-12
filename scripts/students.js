@@ -4,6 +4,7 @@ let userToken = JSON.parse(localStorage.getItem('Data'))
 document.addEventListener('DOMContentLoaded', function () {
 
 
+
   document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -30,14 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
         contactInput.value.trim().length < 10
     ) {
         alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
-        return; // Return to prevent further execution
+        return; 
     }
 
     await addStudent();
 
     const addStudentModal = document.getElementById('addStudentModal');
     const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-    modalInstance.hide(); // Hide the modal upon successful addition
+    modalInstance.hide()
 });
 
 
@@ -50,6 +51,20 @@ document.getElementById('addStudentCloseBtn').addEventListener('click', function
 
 // Add student modal hide event par background ko unlock karne ke liye event listener
 document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
+
+  document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('contact').value = '';
+    document.getElementById('assignedUser2').selectedIndex = 0; // Select the first option in the dropdown
+    document.getElementById('selectCourse').selectedIndex = 0; // Select the first option in the dropdown
+    document.getElementById('courseStartDate2').value = '';
+    document.getElementById('courseEndDate2').value = '';
+    document.getElementById('date_of_payment').value = '';
+    document.getElementById('state').value = '';
+    document.getElementById('fee').value = '';
+    document.getElementById('CourseDuration').value = '';
+
+
   const modalBackdrop = document.querySelector('.modal-backdrop');
   if (modalBackdrop) {
       modalBackdrop.remove(); // Modal backdrop element ko remove karein
@@ -135,7 +150,7 @@ document.getElementById('courseStartDate2').addEventListener('change', calculate
 document.getElementById('CourseDuration').addEventListener('input', calculateEndDate);
 
 
-  async function addStudent() {
+async function addStudent() {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const countryCodeInput = document.getElementById('countryCode'); // New line to get country code
@@ -193,8 +208,9 @@ document.getElementById('CourseDuration').addEventListener('input', calculateEnd
         const addStudentModal = document.getElementById('addStudentModal');
         const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
         alert('Student Added Successfully!!')
+        fetchStudents()
         modalInstance.hide(); // Hide the modal upon successful addition
-        window.location.reload()
+        // window.location.reload()
     } catch (error) {
         console.error('Error adding student:', error);
         alert('Error adding student: ' + error.message);
@@ -214,16 +230,17 @@ async function applyFilters() {
   const courseName = document.getElementById('courseName').value || '';
   // const creationDate = document.getElementById('creationDate').value || '';
   const courseFee = document.getElementById('courseFee').value || '';
+  const contact = document.getElementById('contactcheck').value || '';
 
   // Call fetchStudents function with filter values
-  await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, courseFee);
+  await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, courseFee, contact);
 }
 
 
-async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', download = false) {
+async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false) {
     // Prepare query parameters
     // const userIdsParam = selectedUserIds.join(',')
-    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}`;
+    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -268,6 +285,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
 }
 
 
+
 async function triggerDownload(data) {
   try {
       // Generate Excel workbook
@@ -298,7 +316,6 @@ async function triggerDownload(data) {
       console.error('Error during download:', error);
   }
 }
-
 
 
 
@@ -381,9 +398,12 @@ async function fetchUsersForCheckboxes() {
 }
 
 
+
 function handleCheckboxClick(event) {
   event.stopPropagation(); // Prevent dropdown from closing when clicking on checkbox
 }
+
+
 
 function formatDateRange(previousCourse) {
     const startDate = formatDate2(previousCourse.start);
@@ -444,6 +464,8 @@ async function handleExtendCourseButtonClick(studentId) {
   }
 }
 
+
+
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
   try {
       // Send PUT request to extend the course
@@ -477,6 +499,7 @@ async function extendCourse(studentId, additionalMonths, amount, date_of_payment
 }
 
 
+
 function displayStudents(students, download) {
   console.log(students);
   const tableHeaders = document.getElementById('tableHeaders');
@@ -504,12 +527,20 @@ function displayStudents(students, download) {
 
     for (let i = 1; i <= maxPreviousCoursesCount; i++) {
       const thDateRange = document.createElement('th');
-      thDateRange.textContent = `Prev Course ${i} Date Range`;
+      thDateRange.textContent = `Prev. Course ${i} Date Range`;
       tableHeaders.appendChild(thDateRange);
 
       const thCreatedAt = document.createElement('th');
-      thCreatedAt.textContent = `Prev Course ${i} Extend At`;
+      thCreatedAt.textContent = `Prev. Course ${i} Extend At`;
       tableHeaders.appendChild(thCreatedAt);
+
+      const thPayment = document.createElement('th');
+      thPayment.textContent = `Prev. Course ${i} Payment`;
+      tableHeaders.appendChild(thPayment);
+
+      const thDateOfPayment = document.createElement('th');
+      thDateOfPayment.textContent = `Prev. Course ${i} Date Of Payment`;
+      tableHeaders.appendChild(thDateOfPayment);
     }
 
     students.forEach(student => {
@@ -539,6 +570,16 @@ function displayStudents(students, download) {
           const tdCreatedAt = document.createElement('td');
           tdCreatedAt.textContent = formattedCreatedAt !== undefined ? formattedCreatedAt : 'NA';
           tr.appendChild(tdCreatedAt);
+
+          const tdPayment = document.createElement('td'); 
+          tdPayment.textContent = previousCourse.amount !== undefined ? previousCourse.amount : 'NA';
+          tr.appendChild(tdPayment);
+
+          const formatDOP = formatDate2(previousCourse.date_of_payment)
+          const tdDateOfPayment = document.createElement('td');
+          tdDateOfPayment.textContent = formatDOP !== undefined ? formatDOP : 'NA';
+          tr.appendChild(tdDateOfPayment)
+
         });
       } else {
         // Fill empty cells for PreviousCourses with 'NA'
@@ -596,6 +637,8 @@ function displayStudents(students, download) {
 
   // If download is not initiated, proceed with the rest of the function
 }
+
+
 
 
 
@@ -689,6 +732,7 @@ function resetFilters() {
   document.getElementById('courseName').selectedIndex = 0; // Select the first option (empty option)
   // document.getElementById('creationDate').value = '';
   document.getElementById('courseFee').value = '';
+  document.getElementById('contactcheck').value = '';
 
 
   fetchStudents()
