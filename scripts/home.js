@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = './index.html'
    })
 
+   
     if(!profile || !token || isTokenExpired(token)){
         alert('Token has expired! Please log in again. ');
         window.location.href = './index.html';

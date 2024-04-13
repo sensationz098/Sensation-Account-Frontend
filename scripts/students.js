@@ -3,7 +3,11 @@ let userToken = JSON.parse(localStorage.getItem('Data'))
 
 document.addEventListener('DOMContentLoaded', function () {
 
-
+  document.getElementById('searchStudent').addEventListener('submit', async(e) => {
+    e.preventDefault()
+  searchStudent()
+  })
+  
 
   document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -220,6 +224,12 @@ async function addStudent() {
 
 
 
+function searchStudent() {
+  const name = document.getElementById('StudentNameValue').value || '';
+console.log(name)
+  fetchStudents(name)
+}
+
 async function applyFilters() {
   const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
   console.log('Selected User IDs:', selectedUserIds);
@@ -237,10 +247,9 @@ async function applyFilters() {
 }
 
 
-async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false) {
-    // Prepare query parameters
-    // const userIdsParam = selectedUserIds.join(',')
-    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
+async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false, name='') {
+
+    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -253,7 +262,6 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         // console.log(data.students);
         let studentData = data.students;
         const assignedUserIds = studentData.map(student => student.assignedUserId);
-        console.log(assignedUserIds);
         const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${assignedUserIds.join(',')}`,{
           headers: {
             'Content-Type': 'application/json',
@@ -261,10 +269,21 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
           }
         });
         const userName = await userNameResponse.json();
-        // console.log('username....', userName);
   
         console.log(studentData)
-        studentData.forEach(student => {
+        const sorted = studentData.sort((a, b) => {
+          const nameA = a.name.toLowerCase(); // Convert name to lowercase for case-insensitive sorting
+          const nameB = b.name.toLowerCase();
+          if (nameA < nameB) {
+            return -1; // nameA comes before nameB
+          }
+          if (nameA > nameB) {
+            return 1; // nameA comes after nameB
+          }
+          return 0; // names are equal
+        });
+        
+        sorted.forEach(student => {
             // console.log(student);
             const user = userName.find(u => u._id === student.assignedUserId);
             if (user) {
@@ -273,7 +292,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
             }
         });
 
-        displayStudents(studentData, download);
+        displayStudents(sorted, download);
         if (download) {
             triggerDownload(studentData);
         }
