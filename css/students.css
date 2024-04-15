@@ -465,3 +465,28 @@ select:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+
+/* CSS for Add Course button */
+.add-course-btn {
+  /* Add your custom styles here */
+  background-color: #007bff; /* Blue color */
+  color: #fff; /* White text color */
+}
+
+.add-course-btn:hover {
+  /* Add your custom hover styles here */
+  background-color: #0056b3; /* Darker blue color on hover */
+}
+
+/* CSS for Add Teacher button */
+.add-teacher-btn {
+  /* Add your custom styles here */
+  background-color: #dc3545; /* Red color */
+  color: #fff; /* White text color */
+}
+
+.add-teacher-btn:hover {
+  /* Add your custom hover styles here */
+  background-color: #c82333; /* Darker red color on hover */
+}

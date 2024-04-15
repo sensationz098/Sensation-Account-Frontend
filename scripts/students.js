@@ -3,11 +3,36 @@ let userToken = JSON.parse(localStorage.getItem('Data'))
 
 document.addEventListener('DOMContentLoaded', function () {
 
+
+  fetch('http://localhost:9090/courses', {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token
+  }
+  })
+        .then(response => response.json())
+        .then(data => {
+            const selectCourse = document.getElementById('selectCourse');
+            // Iterate through each course and create an option element
+            data.forEach(course => {
+                const option = document.createElement('option');
+                option.text = course.coursename; // Assuming 'name' field contains course name
+                option.value = course.coursename; // Assuming '_id' field contains course ID
+                selectCourse.appendChild(option); // Append the option to select dropdown
+            });
+        })
+        .catch(error => console.error('Error fetching courses:', error));
+
   document.getElementById('searchStudent').addEventListener('submit', async(e) => {
     e.preventDefault()
   searchStudent()
   })
   
+
+  // Add event listener to the "Add Course" form submit event
+document.getElementById('addCourseForm').addEventListener('submit', handleAddCourseFormSubmit);
+
+
 
   document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -657,6 +682,59 @@ function displayStudents(students, download) {
   // If download is not initiated, proceed with the rest of the function
 }
 
+
+
+
+// Function to handle form submission for adding a course
+function handleAddCourseFormSubmit(event) {
+  event.preventDefault(); // Prevent default form submission
+
+  // Get the course name from the form
+  const courseName2 = document.getElementById('courseName2').value;
+
+  // Send an HTTP POST request to the server
+  fetch('http://localhost:9090/courses/add', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+      },
+      body: JSON.stringify({ coursename: courseName2 })
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      // Handle successful response
+      console.log(data); // You can do something with the response data if needed
+      
+      // Optionally, you can display a success message to the user
+      alert(data.msg); // Display the success message
+      
+      // Close the modal after showing the alert
+      var addCourseModal = document.getElementById('addCourseModal');
+      addCourseModal.classList.remove('show');
+      addCourseModal.setAttribute('aria-hidden', 'true');
+      addCourseModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      var modalBackdrops = document.getElementsByClassName('modal-backdrop');
+      for(var i = 0; i < modalBackdrops.length; i++) {
+          modalBackdrops[i].parentNode.removeChild(modalBackdrops[i]);
+      }
+  })
+  .catch(error => {
+      // Handle errors
+      console.error('There was an error!', error);
+      // Optionally, you can display an error message to the user
+      alert('There was an error while adding the course. Please try again later.');
+  });
+}
+
+// Add event listener to the "Add Course" form submit event
+document.getElementById('addCourseForm').addEventListener('submit', handleAddCourseFormSubmit);
 
 
 

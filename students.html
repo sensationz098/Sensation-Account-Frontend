@@ -23,53 +23,47 @@
   </head>
   <body>
     <div class="document">
+
+
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="./home.html"
-            ><img src="./photos/sensationz.png" alt="logo"
-          /></a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <h2 id="username"></h2>
-              </li>
-            </ul>
-            <button
-            id="addStudent"
-            class="btn btn-outline-success"
-            onclick="openAddStudentModal()"
-            data-bs-toggle="modal"
-            data-bs-target="#addStudentModal"
-            >
-              Add Student
+            <a class="navbar-brand" href="./home.html">
+                <img src="./photos/sensationz.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-
-            <form class="d-flex" role="search" id="searchStudent">
-              <input
-                class="form-control me-2"
-                type="search"
-                id="StudentNameValue"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <h2 id="username"></h2>
+                    </li>
+                </ul>
+                <button id="addStudent" class="btn btn-outline-success" onclick="openAddStudentModal()"
+                    data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                    Add Student
+                </button>
+                <button id="addCourse" class="btn btn-outline-primary mx-2 add-course-btn""
+                    data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                    Add Course
+                </button>
+                <button id="addTeacher" class="btn btn-outline-danger add-teacher-btn" onclick="openAddTeacherModal()"
+                    data-bs-toggle="modal" data-bs-target="#addTeacherModal">
+                    Add Teacher
+                </button>
+                <form class="d-flex" role="search" id="searchStudent">
+                    <input class="form-control me-2" type="search" id="StudentNameValue" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">
+                        Search
+                    </button>
+                </form>
+            </div>
         </div>
-      </nav>
+    </nav>
+    
+    
 
       <div class="mid">
         <div id="mid1">
@@ -292,12 +286,6 @@
                   <div class="mb-3">
                     <label for="course" class="form-label">Course:</label>
                     <select name="course" id="selectCourse">
-                      <option value="kathak">Kathak</option>
-                      <option value="yoga">Yoga</option>
-                      <option value="dance">Dance</option>
-                      <option value="englishspeaking">English Speaking</option>
-                      <option value="acting">Acting</option>
-                      <option value="faceyoga">Face Yoga</option>
                     </select>
                   </div>
                   <div class="mb-3">
@@ -388,7 +376,6 @@
                   <div class="mb-3">
                     <label for="state" class="form-label">State:</label>
                     <select name="state" id="state">
-                        <option value="">Select State/UT</option>
                         <optgroup label="States">
                             <option value="Andhra Pradesh">Andhra Pradesh</option>
                             <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -475,6 +462,58 @@
     </div>
   </div>
         </div>
+
+
+
+        <!-- Add Course Modal -->
+        <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addCourseModalLabel">Add Course</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <!-- Add your course form here -->
+              <form id="addCourseForm">
+                  <div class="mb-3">
+                      <label for="courseName2" class="form-label">Course Name</label>
+                      <input type="text" class="form-control" id="courseName2" required>
+                  </div>
+                  <!-- Add more fields for course details if needed -->
+                  <button type="submit" class="btn btn-primary">Add Course</button>
+              </form>
+          </div>
+      </div>
+  </div>
+        </div>
+
+
+
+
+        <!-- Add Teacher Modal -->
+        <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addTeacherModalLabel">Add Teacher</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <!-- Add your teacher form here -->
+              <form id="addTeacherForm">
+                  <div class="mb-3">
+                      <label for="teacherName" class="form-label">Teacher Name</label>
+                      <input type="text" class="form-control" id="teacherName" required>
+                  </div>
+                  <!-- Add more fields for teacher details if needed -->
+                  <button type="submit" class="btn btn-primary">Add Teacher</button>
+              </form>
+          </div>
+      </div>
+  </div>
+        </div>
+
 
 
       </div>
