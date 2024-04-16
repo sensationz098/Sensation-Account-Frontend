@@ -120,12 +120,6 @@
                 <label for="courseName" class="form-label">Course Name:</label>
                 <select id="courseName" name="courseName">
                     <option value="">Select a course</option> <!-- Empty option -->
-                    <option value="kathak">Kathak</option>
-                    <option value="yoga">Yoga</option>
-                    <option value="dance">Dance</option>
-                    <option value="englishspeaking">English Speaking</option>
-                    <option value="acting">Acting</option>
-                    <option value="face">Face Yoga</option>
                 </select>
             </div>
 
@@ -357,6 +351,14 @@
                     />
                   </div>
                   <div class="mb-3">
+                    <label for="TeacherName" class="form-label"
+                      >Teacher:</label
+                    >
+                    <select name="TeacherName" id="TeacherName">
+                      <option value="">Select Teacher</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
                     <label for="fee" class="form-label">Fee:</label>
                     <input
                       type="number"
@@ -504,7 +506,7 @@
               <form id="addTeacherForm">
                   <div class="mb-3">
                       <label for="teacherName" class="form-label">Teacher Name</label>
-                      <input type="text" class="form-control" id="teacherName" required>
+                      <input type="text" class="form-control" id="addteacherName" required>
                   </div>
                   <!-- Add more fields for teacher details if needed -->
                   <button type="submit" class="btn btn-primary">Add Teacher</button>

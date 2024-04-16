@@ -5,11 +5,13 @@ let token = tokenData.token
 
 
 document.addEventListener('DOMContentLoaded', async function() {
+
+
+    
 document.getElementById('editName').value = studentData.name || '';
 document.getElementById('editEmail').value = studentData.email || '';
 document.getElementById('editContact').value = studentData.contact || '';
 document.getElementById('editCourse').value = studentData.course || '';
-// document.getElementById('editBatch').value = studentData.batch || '';
 document.getElementById('editTiming').value = studentData.timing || '';
 document.getElementById('editCourseStartDate').value = formatDate(studentData.courseStartDate) || '';
 document.getElementById('editCourseEndDate').value = formatDate(studentData.courseEndDate) || '';
@@ -17,6 +19,7 @@ document.getElementById('editDateOfPayment').value = formatDate(studentData.date
 document.getElementById('editState').value = studentData.state || '';
 document.getElementById('editFee').value = studentData.fee || '';
 document.getElementById('editCourseDuration').value = studentData.CourseDuration || '';
+document.getElementById('editTeacherName').value = studentData.Teacher || '';
 
 // Fetch courses from the API
 try {
@@ -35,6 +38,7 @@ try {
     // Populate options
     const editCourseSelect = document.getElementById('editCourse'); // Get reference to the select element
     editCourseSelect.innerHTML = ''; // Clear existing options
+    
 
     courses.forEach(course => {
         const option = document.createElement('option');
@@ -52,6 +56,35 @@ try {
     console.error('Error fetching courses:', error);
 }
 
+
+try {
+    const response = await fetch(`http://localhost:9090/teachers`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization':token
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch teachers: ${response.status} ${response.statusText}`);
+    }
+    const teachers = await response.json();
+    console.log(teachers)
+    const teacherSelect = document.getElementById('editTeacherName');
+    teacherSelect.innerHTML = ''; // Clear existing options
+
+    teachers.forEach(teacher => {
+        const option2 = document.createElement('option');
+        option2.value = teacher.TeacherName; // Assuming '_id' is the property containing teacher ID
+        option2.textContent = teacher.TeacherName; // Assuming 'teacherName' is the property containing teacher name
+        teacherSelect.appendChild(option2);
+    });
+
+    teacherSelect.value = studentData.Teacher
+
+} catch (error) {
+    console.error('Error fetching teachers:', error);
+    // Handle error condition here, display error message or take appropriate action
+}
 
 
 // Populate assigned users dropdown
@@ -113,9 +146,12 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
       courseStartDate: document.getElementById('editCourseStartDate').value,
       courseEndDate: document.getElementById('editCourseEndDate').value,
       fee: document.getElementById('editFee').value,
-      CourseDuration: document.getElementById('editCourseDuration').value
+      CourseDuration: document.getElementById('editCourseDuration').value,
+      Teacher: document.getElementById('editTeacherName').value
+
   };
 
+ 
   try {
       const response = await fetch(`http://localhost:9090/user/student/edit/${studentId}`, {
           method: 'PUT',
@@ -127,8 +163,10 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
       });
 
       if (response.ok) {
+        console.log(requestBody)
           alert('Student details updated successfully.');
-          location.reload(); // Reload the page after successful update
+
+        //   location.reload(); // Reload the page after successful update
       } else {
           const errorMessage = await response.text();
           throw new Error(errorMessage);

@@ -4,21 +4,83 @@ let userToken = JSON.parse(localStorage.getItem('Data'))
 document.addEventListener('DOMContentLoaded', function () {
 
 
+
+document.getElementById('addTeacherForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+    const teacherName = document.getElementById('addteacherName').value;
+
+    try {
+        const response = await fetch('http://localhost:9090/teachers/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ TeacherName: teacherName })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('New teacher added:', data);
+            // Optionally, you can close the modal or display a success message here
+        } else {
+            console.error('Failed to add teacher:', response.statusText);
+            alert('Failed to add teacher:', response.statusText)
+            // Handle error condition here, display error message or take appropriate action
+        }
+    } catch (error) {
+        console.error('Error adding teacher:', error);
+        // Handle error condition here, display error message or take appropriate action
+    }
+});
+
+
+
+
+
+  fetch('http://localhost:9090/teachers', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const selectTeacher = document.getElementById('TeacherName');
+    data.forEach(teacher => {
+      const option = document.createElement('option')
+      option.textContent = teacher.TeacherName
+      option.value = teacher.TeacherName
+      selectTeacher.appendChild(option)
+    })
+  })
+   .catch(err => console.log(err))
+
+
+
   fetch('http://localhost:9090/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
   }
   })
+
         .then(response => response.json())
         .then(data => {
             const selectCourse = document.getElementById('selectCourse');
+            const selectCourse2 = document.getElementById('courseName')
             // Iterate through each course and create an option element
             data.forEach(course => {
                 const option = document.createElement('option');
                 option.text = course.coursename; // Assuming 'name' field contains course name
                 option.value = course.coursename; // Assuming '_id' field contains course ID
                 selectCourse.appendChild(option); // Append the option to select dropdown
+
+                const option2 = document.createElement('option');
+                option2.text = course.coursename;
+                option2.value = course.coursename;
+                selectCourse2.appendChild(option2); // Append the option to second select dropdown
+   
             });
         })
         .catch(error => console.error('Error fetching courses:', error));
@@ -46,6 +108,7 @@ document.getElementById('addCourseForm').addEventListener('submit', handleAddCou
     const stateInput = document.getElementById('state');
     const feeInput = document.getElementById('fee');
     const courseDurationInput = document.getElementById('CourseDuration');
+    const TeacherInput = document.getElementById('TeacherName');
 
     if (
         nameInput.value.trim() === '' ||
@@ -57,6 +120,7 @@ document.getElementById('addCourseForm').addEventListener('submit', handleAddCou
         stateInput.value.trim() === '' ||
         feeInput.value.trim() === '' ||
         courseDurationInput.value.trim() === '' ||
+        TeacherInput.value.trim() === '' ||
         contactInput.value.trim().length < 10
     ) {
         alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
@@ -92,6 +156,7 @@ document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', f
     document.getElementById('state').value = '';
     document.getElementById('fee').value = '';
     document.getElementById('CourseDuration').value = '';
+    document.getElementById('TeacherName').value = '';
 
 
   const modalBackdrop = document.querySelector('.modal-backdrop');
@@ -194,6 +259,7 @@ async function addStudent() {
     const feeInput = document.getElementById('fee');
     const courseDurationInput = document.getElementById('CourseDuration');
     const isLifetimeInput = document.getElementById('isLifetime');
+    const TeacherName = document.getElementById('TeacherName');
 
     const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
 
@@ -211,7 +277,8 @@ async function addStudent() {
         courseEndDate: courseEndDateInput.value,
         fee: feeInput.value,
         CourseDuration: courseDurationInput.value,
-        isLifetime: isLifetimeInput.value
+        isLifetime: isLifetimeInput.value,
+        Teacher: TeacherName.value
     };
 
     console.log("Selected lifetime value:", isLifetimeInput.value);
@@ -591,19 +658,33 @@ function displayStudents(students, download) {
       const tr = document.createElement('tr');
 
       headers.forEach(header => {
-        const td = document.createElement('td');
-        if (header === 'date_of_payment' || header === 'courseStartDate' || header === 'courseEndDate' || header === 'createdAt') {
-          // Format date columns
-          td.textContent = formatDate2(student[header]);
-        } else {
-          // For other columns, simply display the data or 'NA' if undefined
-          td.textContent = student[header] !== undefined ? student[header] : 'NA';
-        }
-        tr.appendChild(td);
+          const td = document.createElement('td');
+          if (header === 'date_of_payment' || header === 'courseStartDate' || header === 'courseEndDate' || header === 'createdAt') {
+              // Format date columns
+              td.textContent = formatDate2(student[header]);
+          } else {
+              // For other columns, simply display the data or 'NA' if undefined
+              td.textContent = student[header] !== undefined ? student[header] : 'NA';
+          }
+          tr.appendChild(td);
       });
+  
+      // Replace the content of the "name" column with a hyperlinked version
+      const nameTd = tr.querySelector('td'); // Get the first td element (assuming it corresponds to the "name" column)
+      nameTd.innerHTML = ''; // Clear the existing content
+      const nameLink = document.createElement('a');
+      nameLink.textContent = student.name; // Assuming 'name' is the property containing the student's name
+      nameLink.href = '#'; // Set href to "#" to prevent page reload
+      nameLink.addEventListener('click', () => handleExtendCourseButtonClick(student._id)); // Attach event listener to handle modal opening
+      nameTd.appendChild(nameLink);
+  
+      // Add Edit button, Extend Course button, and Delete button as before
+  
+      tableBody.appendChild(tr);
+      
 
-      // Add data for PreviousCourses
-      if (student.previousCourses && student.previousCourses.length > 0) {
+       // Add data for PreviousCourses
+       if (student.previousCourses && student.previousCourses.length > 0) {
         student.previousCourses.forEach(previousCourse => {
           const formattedDateRange = formatDateRange(previousCourse);
           const td = document.createElement('td');
