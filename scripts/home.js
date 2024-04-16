@@ -88,7 +88,7 @@ console.log(students.length);
 console.log(students);
 const userIds = students.map(student => student.assignedUserId);
 console.log(userIds)
-const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com-backend-mark1-2.onrender.com/user/allusers?id=${userIds.join(',')}`,{
+const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
     headers: {
         "Content": 'application/json',
         "Authorization": token
