@@ -75,7 +75,7 @@ formattedEndDate = formatDate(selectedDates[1]);
 
 console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-const url = `http://localhost:9090/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+const url = `https://sensationzmediaarts.onrender.com/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
 const response = await fetch(url, {
     headers: {

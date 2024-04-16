@@ -13,7 +13,7 @@ document.querySelector("form").addEventListener("submit", async function (event)
     document.body.appendChild(spinner);
 
     // Make a POST request to your backend
-    const response = await fetch("http://localhost:9090/auth/login", {
+    const response = await fetch("https://sensationzmediaarts.onrender.com/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
