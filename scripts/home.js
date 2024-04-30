@@ -75,7 +75,7 @@ formattedEndDate = formatDate(selectedDates[1]);
 
 console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-const url = `https://sensationzmediaarts.onrender.com/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+const url = `http://localhost:9090/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
 const response = await fetch(url, {
     headers: {
@@ -88,7 +88,7 @@ console.log(students.length);
 console.log(students);
 const userIds = students.map(student => student.assignedUserId);
 console.log(userIds)
-const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
+const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${userIds.join(',')}`,{
     headers: {
         "Content": 'application/json',
         "Authorization": token
@@ -325,4 +325,6 @@ const Allstudents = document.getElementById('allStudents').addEventListener('cli
     window.location = './students.html'
 })
 
-
+const uploadFIle = document.getElementById('uploadFile').addEventListener('click', () => {
+    window.location = './uploadfile.html'
+})

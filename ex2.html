@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="./css/uploadfile.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Upload File</h1>
+        <label for="fileInput" id="fileInputLabel">Choose File</label>
+        <input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <div id="mappingForm" style="display: none;">
+            <h2>Map Headers</h2>
+            <form id="mappingForm"></form>
+        </div>
+        <button id="uploadBtn">Upload</button>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const mappingForm = document.getElementById('mappingForm');
+            const uploadBtn = document.getElementById('uploadBtn');
+
+            fileInput.addEventListener('change', function() {
+                const file = fileInput.files[0];
+                if (file) {
+                    const fileName = file.name;
+                    const fileExt = fileName.split('.').pop().toLowerCase();
+                    if (fileExt === 'csv') {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const csvString = e.target.result;
+                            const headers = parseHeaders(csvString);
+                            generateMappingForm(headers);
+                        };
+                        reader.readAsText(file);
+                    } else if (fileExt === 'xlsx') {
+                        parseXlsxFile(file); // Handle XLSX file parsing
+                    } else {
+                        alert('Unsupported file format');
+                    }
+                }
+            });
+
+            // Function to extract headers from CSV file
+            function parseHeaders(csvString) {
+                const lines = csvString.split('\n');
+                const headers = lines[0].split(',');
+                console.log('File Headers:', headers);
+                return headers;
+            }
+
+            // Function to parse XLSX file
+            function parseXlsxFile(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const parsedData = XLSX.utils.sheet_to_json(worksheet, { raw: false }); // Ensure dates are parsed as date objects
+                    console.log('Parsed data:', parsedData); // Log parsed data
+                    formatDates(parsedData); // Format dates before generating mapping form
+                };
+                reader.readAsArrayBuffer(file);
+            }
+
+            // Function to format dates using Moment.js
+            function formatDates(data) {
+                data.forEach(row => {
+                    // Format 'DOA' date
+                    if (row.DOA) {
+                        row.DOA = moment(row.DOA, 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+                    }
+                    // Format 'Fee Due' date
+                    if (row['FEE DUE']) {
+                        row['FEE DUE'] = moment(row['FEE DUE'], 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+                    }
+                    // Format 'Fee From' date
+                    if (row['FEE FROM']) {
+                        row['FEE FROM'] = moment(row['FEE FROM'], 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+                    }
+                });
+                generateMappingForm(Object.keys(data[0])); // Generate mapping form after formatting dates
+            }
+
+            // Function to generate dropdown menu for mapping
+            function generateMappingForm(headers) {
+                mappingForm.innerHTML = '<h2>Map Headers</h2>';
+                const fields = ['name', 'contact', 'course', 'date_of_payment', 'courseStartDate', 'courseEndDate', 'fee', 'CourseDuration', 'assignedUserId'];
+                fields.forEach(field => {
+                    const fieldLabel = document.createElement('label');
+                    fieldLabel.textContent = field + ':';
+                    const selectField = document.createElement('select');
+                    selectField.name = field.replace(/\s+/g, '');
+                    selectField.innerHTML = '<option value="">Select Field</option>';
+                    headers.forEach(header => {
+                        selectField.innerHTML += `<option value="${header}">${header}</option>`;
+                    });
+                    const fieldDiv = document.createElement('div');
+                    fieldDiv.classList.add('field');
+                    fieldDiv.appendChild(fieldLabel);
+                    fieldDiv.appendChild(selectField);
+                    mappingForm.appendChild(fieldDiv);
+                });
+                // Set the display property of mappingForm to 'block'
+                mappingForm.style.display = 'block';
+            }
+
+            uploadBtn.addEventListener('click', function() {
+                const file = fileInput.files[0];
+                if (file) {
+                    const mapping = prepareMapping(); // Function to prepare mapping data
+                    console.log('Mapping:', mapping); // Log the mapping data
+
+                    // Log values of the fields before sending the request
+                    const formData = new FormData();
+                    formData.append('excelfile', file);
+                    formData.append('mapping', JSON.stringify(mapping)); // Send mapping data along with the file
+                    console.log('FormData:', formData);
+
+                    fetch('http://localhost:9090/fileupload/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(data => {
+                        alert(data); // Display feedback message
+                    })
+                    .catch(error => {
+                        console.error('Error uploading data:', error);
+                        alert('Error: ' + error.message);
+                    });
+                }
+            });
+
+            // Function to prepare mapping data from the form
+            function prepareMapping() {
+                const mapping = {};
+                const selectFields = document.querySelectorAll('select');
+                selectFields.forEach(select => {
+                    const fieldName = select.name; // Get the field name
+                    const selectedHeader = select.value; // Get the selected header
+                    mapping[fieldName] = selectedHeader; // Map the field name to the selected header
+                });
+                return mapping;
+            }
+        });
+    </script>
+</body>
+</html>

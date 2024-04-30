@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    color: #333;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+#fileInputLabel {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#fileInputLabel:hover {
+    background-color: #45a049;
+}
+
+button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #005f75;
+}
+
+.field {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    appearance: none;
+    background-color: #f8f8f8;
+    font-size: 16px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #66afe9;
+}
+
+option {
+    padding: 10px;
+}
+
+/* Adjustments for Choose File button */
+input[type="file"] {
+    display: none;
+}
+
+#fileInputLabel {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block; /* Ensure the button is displayed inline */
+}
+
+#fileInputLabel:hover {
+    background-color: #45a049;
+}
+
+#fileInput {
+    display: none; /* Hide the default file input */
+}
