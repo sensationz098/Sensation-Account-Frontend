@@ -16,52 +16,49 @@
         <h1>Upload File</h1>
         <label for="fileInput" id="fileInputLabel">Choose File</label>
         <input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-        <div id="mappingForm" style="display: none;">
-            <h2>Map Headers</h2>
-            <form id="mappingForm">
-                <div class="field">
-                    <label for="name">Name:</label>
-                    <select id="name" name="name"></select>
-                </div>
-                <!-- Other form fields -->
-                <div class="field">
-                    <label for="name">Name:</label>
-                    <select id="name" name="name"></select>
-                </div>
-                <div class="field">
-                    <label for="contact">Contact:</label>
-                    <select id="contact" name="contact"></select>
-                </div>
-                <div class="field">
-                    <label for="course">Course:</label>
-                    <select id="course" name="course"></select>
-                </div>
-                <div class="field">
-                    <label for="date_of_payment">Date of Payment:</label>
-                    <select id="date_of_payment" name="date_of_payment"></select>
-                </div>
-                <div class="field">
-                    <label for="courseStartDate">Course Start Date:</label>
-                    <select id="courseStartDate" name="courseStartDate"></select>
-                </div>
-                <div class="field">
-                    <label for="courseEndDate">Course End Date:</label>
-                    <select id="courseEndDate" name="courseEndDate"></select>
-                </div>
-                <div class="field">
-                    <label for="fee">Fee:</label>
-                    <select id="fee" name="fee"></select>
-                </div>
-                <div class="field">
-                    <label for="courseDuration">Course Duration:</label>
-                    <select id="courseDuration" name="courseDuration"></select>
-                </div>
-                <div class="field">
-                    <label for="assignedUserId">Assigned User ID:</label>
-                    <select id="assignedUserId" name="assignedUserId"></select>
-                </div>
-            </form>
+      <div id="mappingForm" style="display: none;">
+    <h2>Map Headers</h2>
+    <form id="mappingForm">
+        <div class="field">
+            <label for="nameField">Name:</label>
+            <select id="nameField" name="name"></select>
         </div>
+        <!-- Other form fields -->
+        <div class="field">
+            <label for="contactField">Contact:</label>
+            <select id="contactField" name="contact"></select>
+        </div>
+        <div class="field">
+            <label for="courseField">Course:</label>
+            <select id="courseField" name="course"></select>
+        </div>
+        <div class="field">
+            <label for="dateOfPaymentField">Date of Payment:</label>
+            <select id="dateOfPaymentField" name="date_of_payment"></select>
+        </div>
+        <div class="field">
+            <label for="courseStartDateField">Course Start Date:</label>
+            <select id="courseStartDateField" name="courseStartDate"></select>
+        </div>
+        <div class="field">
+            <label for="courseEndDateField">Course End Date:</label>
+            <select id="courseEndDateField" name="courseEndDate"></select>
+        </div>
+        <div class="field">
+            <label for="feeField">Fee:</label>
+            <select id="feeField" name="fee"></select>
+        </div>
+        <div class="field">
+            <label for="courseDurationField">Course Duration:</label>
+            <select id="courseDurationField" name="courseDuration"></select>
+        </div>
+        <div class="field">
+            <label for="assignedUserIdField">Assigned User ID:</label>
+            <select id="assignedUserIdField" name="assignedUserId"></select>
+        </div>
+    </form>
+</div>
+
         <button id="uploadBtn">Upload</button>
     </div>
     
@@ -117,24 +114,25 @@ function parseXlsxFile(file) {
     reader.readAsArrayBuffer(file);
 }
 
-// Function to format dates using Moment.js
+// Function to format dates using JavaScript Date object
 function formatDates(data) {
     data.forEach(row => {
-        // Format 'DOA' date
-        if (row.DOA) {
-            row.DOA = moment(row.DOA, 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+        // Format 'date_of_payment' date
+        if (row.date_of_payment) {
+            row.date_of_payment = new Date(row.date_of_payment).toISOString();
         }
-        // Format 'Fee Due' date
-        if (row['FEE DUE']) {
-            row['FEE DUE'] = moment(row['FEE DUE'], 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+        // Format 'courseStartDate' date
+        if (row.courseStartDate) {
+            row.courseStartDate = new Date(row.courseStartDate).toISOString();
         }
-        // Format 'Fee From' date
-        if (row['FEE FROM']) {
-            row['FEE FROM'] = moment(row['FEE FROM'], 'M/D/YY').format('YYYY-MM-DDTHH:mm:ssZ');
+        // Format 'courseEndDate' date
+        if (row.courseEndDate) {
+            row.courseEndDate = new Date(row.courseEndDate).toISOString();
         }
     });
     generateMappingForm(Object.keys(data[0])); // Generate mapping form after formatting dates
 }
+
 
 
 
