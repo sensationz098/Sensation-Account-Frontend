@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
    })
 
    
+   
     if(!profile || !token || isTokenExpired(token)){
         alert('Token has expired! Please log in again. ');
         window.location.href = './index.html';
@@ -75,7 +76,7 @@ formattedEndDate = formatDate(selectedDates[1]);
 
 console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-const url = `https://sensationzmediaarts.onrender.com/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+const url = `http://localhost:9090/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
 const response = await fetch(url, {
     headers: {
@@ -88,7 +89,7 @@ console.log(students.length);
 console.log(students);
 const userIds = students.map(student => student.assignedUserId);
 console.log(userIds)
-const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
+const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${userIds.join(',')}`,{
     headers: {
         "Content": 'application/json',
         "Authorization": token
@@ -99,11 +100,9 @@ const userName = await userNameResponse.json();
 console.log('username...', userName)
 
 students.forEach(student => {
-console.log(student)
 const user = userName.find(u => u._id === student.assignedUserId);
 if (user) {
     student.userName = user.username || 'NA';
-    console.log(student.userName);
 }
 });
 

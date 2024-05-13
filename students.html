@@ -18,6 +18,14 @@
     crossorigin="anonymous"
   ></script>
   
+  <style>
+    #pagination{
+      width: 300px;
+      height: 50px;
+      margin-left: 670px;
+      border: 2px solid black;
+    }
+  </style>
   
 
   </head>
@@ -158,6 +166,7 @@
         </div>
 
         <div id="mid2">
+          
           <table class="table" id="mainTable">
             <thead>
               <tr id="tableHeaders">
@@ -421,12 +430,7 @@
                 </div>
                 
 
-                  <button
-                  id="addStudent2"
-                  class="btn btn-outline-success"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addStudentModal"
-                >
+                <button id="addStudent2" class="btn btn-outline-success">
                   Add Student
                 </button>
                 
@@ -465,8 +469,6 @@
   </div>
         </div>
 
-
-
         <!-- Add Course Modal -->
         <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -490,9 +492,6 @@
   </div>
         </div>
 
-
-
-
         <!-- Add Teacher Modal -->
         <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -515,23 +514,10 @@
       </div>
   </div>
         </div>
-
-
-        <nav aria-label="Page navigation example">
-          <ul class="pagination" id="pagination">
-            <!-- Pagination buttons will be dynamically added here -->
-          </ul>
-        </nav>
       </div>
-    
-      <div id="mid2">
-        <!-- Table content -->
+   <div id="pagination"></div>
+</div>
       </div>
-
-
-      </div>
-
-
     </div>
   </body>
 

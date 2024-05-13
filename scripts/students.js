@@ -12,7 +12,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
     const teacherName = document.getElementById('addteacherName').value;
 
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/teachers/add', {
+        const response = await fetch('http://localhost:9090/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/teachers', {
+  fetch('http://localhost:9090/teachers', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': token
@@ -60,7 +60,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/courses', {
+  fetch('http://localhost:9090/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
@@ -98,42 +98,62 @@ document.getElementById('addCourseForm').addEventListener('submit', handleAddCou
 
 
 
-  document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const contactInput = document.getElementById('contact');
-    const courseStartDateInput = document.getElementById('courseStartDate2');
-    const courseEndDateInput = document.getElementById('courseEndDate2');
-    const dateOfPaymentInput = document.getElementById('date_of_payment');
-    const stateInput = document.getElementById('state');
-    const feeInput = document.getElementById('fee');
-    const courseDurationInput = document.getElementById('CourseDuration');
-    const TeacherInput = document.getElementById('TeacherName');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const contactInput = document.getElementById('contact');
+  const courseStartDateInput = document.getElementById('courseStartDate2');
+  const courseEndDateInput = document.getElementById('courseEndDate2');
+  const dateOfPaymentInput = document.getElementById('date_of_payment');
+  const stateInput = document.getElementById('state');
+  const feeInput = document.getElementById('fee');
+  const courseDurationInput = document.getElementById('CourseDuration');
+  const TeacherInput = document.getElementById('TeacherName');
 
-    if (
-        nameInput.value.trim() === '' ||
-        emailInput.value.trim() === '' ||
-        contactInput.value.trim() === '' ||
-        courseStartDateInput.value.trim() === '' ||
-        courseEndDateInput.value.trim() === '' ||
-        dateOfPaymentInput.value.trim() === '' ||
-        stateInput.value.trim() === '' ||
-        feeInput.value.trim() === '' ||
-        courseDurationInput.value.trim() === '' ||
-        TeacherInput.value.trim() === '' ||
-        contactInput.value.trim().length < 10
-    ) {
-        alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
-        return; 
-    }
+  if (
+      nameInput.value.trim() === '' ||
+      emailInput.value.trim() === '' ||
+      contactInput.value.trim() === '' ||
+      courseStartDateInput.value.trim() === '' ||
+      courseEndDateInput.value.trim() === '' ||
+      dateOfPaymentInput.value.trim() === '' ||
+      stateInput.value.trim() === '' ||
+      feeInput.value.trim() === '' ||
+      courseDurationInput.value.trim() === '' ||
+      TeacherInput.value.trim() === '' ||
+      contactInput.value.trim().length < 10
+  ) {
+      alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
+      return; 
+  }
 
-    await addStudent();
+  const addStudentModal = document.getElementById('addStudentModal');
+  const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+  modalInstance.show(); // Modal ko open rakhna
+  await addStudent(); // Form submit ke baad student add karna
+});
 
-    const addStudentModal = document.getElementById('addStudentModal');
-    const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-    modalInstance.hide()
+document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
+  document.getElementById('name').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('contact').value = '';
+  document.getElementById('assignedUser2').selectedIndex = 0; // Select the first option in the dropdown
+  document.getElementById('selectCourse').selectedIndex = 0; // Select the first option in the dropdown
+  document.getElementById('courseStartDate2').value = '';
+  document.getElementById('courseEndDate2').value = '';
+  document.getElementById('date_of_payment').value = '';
+  document.getElementById('state').value = '';
+  document.getElementById('fee').value = '';
+  document.getElementById('CourseDuration').value = '';
+  document.getElementById('TeacherName').value = '';
+
+  const modalBackdrop = document.querySelector('.modal-backdrop');
+  if (modalBackdrop) {
+      modalBackdrop.remove(); // Modal backdrop element ko remove karein
+  }
+  document.body.style.overflow = 'auto'; // Scroll lock ko unset karein
 });
 
 
@@ -144,29 +164,8 @@ document.getElementById('addStudentCloseBtn').addEventListener('click', function
   modalInstance.hide();
 });
 
-// Add student modal hide event par background ko unlock karne ke liye event listener
-document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
-
-  document.getElementById('name').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('contact').value = '';
-    document.getElementById('assignedUser2').selectedIndex = 0; // Select the first option in the dropdown
-    document.getElementById('selectCourse').selectedIndex = 0; // Select the first option in the dropdown
-    document.getElementById('courseStartDate2').value = '';
-    document.getElementById('courseEndDate2').value = '';
-    document.getElementById('date_of_payment').value = '';
-    document.getElementById('state').value = '';
-    document.getElementById('fee').value = '';
-    document.getElementById('CourseDuration').value = '';
-    document.getElementById('TeacherName').value = '';
 
 
-  const modalBackdrop = document.querySelector('.modal-backdrop');
-  if (modalBackdrop) {
-      modalBackdrop.remove(); // Modal backdrop element ko remove karein
-  }
-  document.body.style.overflow = 'auto'; // Scroll lock ko unset karein
-});
 
 const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
@@ -247,73 +246,72 @@ document.getElementById('CourseDuration').addEventListener('input', calculateEnd
 
 
 async function addStudent() {
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const countryCodeInput = document.getElementById('countryCode'); // New line to get country code
-    const contactInput = document.getElementById('contact');
-    const assignedUserInput = document.getElementById('assignedUser2');
-    const selectCourseInput = document.getElementById('selectCourse');
-    const timingInput = document.getElementById('timing');
-    const courseStartDateInput = document.getElementById('courseStartDate2');
-    const courseEndDateInput = document.getElementById('courseEndDate2');
-    const dateOfPaymentInput = document.getElementById('date_of_payment');
-    const state = document.getElementById('state')
-    const feeInput = document.getElementById('fee');
-    const courseDurationInput = document.getElementById('CourseDuration');
-    const isLifetimeInput = document.getElementById('isLifetime');
-    const TeacherName = document.getElementById('TeacherName');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const countryCodeInput = document.getElementById('countryCode'); // New line to get country code
+  const contactInput = document.getElementById('contact');
+  const assignedUserInput = document.getElementById('assignedUser2');
+  const selectCourseInput = document.getElementById('selectCourse');
+  const timingInput = document.getElementById('timing');
+  const courseStartDateInput = document.getElementById('courseStartDate2');
+  const courseEndDateInput = document.getElementById('courseEndDate2');
+  const dateOfPaymentInput = document.getElementById('date_of_payment');
+  const state = document.getElementById('state')
+  const feeInput = document.getElementById('fee');
+  const courseDurationInput = document.getElementById('CourseDuration');
+  const isLifetimeInput = document.getElementById('isLifetime');
+  const TeacherName = document.getElementById('TeacherName');
 
-    const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
+  const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
 
-    const formValues = {
-        name: nameInput.value,
-        email: emailInput.value,
-        contact: contactValue, // Use the concatenated value
-        assignedUserId: assignedUserInput.value,
-        course: selectCourseInput.value,
-        // batch: batchInput.value,
-        timing: timingInput.value,
-        date_of_payment: dateOfPaymentInput.value,
-        state: state.value,
-        courseStartDate: courseStartDateInput.value,
-        courseEndDate: courseEndDateInput.value,
-        fee: feeInput.value,
-        CourseDuration: courseDurationInput.value,
-        isLifetime: isLifetimeInput.value,
-        Teacher: TeacherName.value
-    };
+  const formValues = {
+      name: nameInput.value,
+      email: emailInput.value,
+      contact: contactValue, // Use the concatenated value
+      assignedUserId: assignedUserInput.value,
+      course: selectCourseInput.value,
+      timing: timingInput.value,
+      date_of_payment: dateOfPaymentInput.value,
+      state: state.value,
+      courseStartDate: courseStartDateInput.value,
+      courseEndDate: courseEndDateInput.value,
+      fee: feeInput.value,
+      CourseDuration: courseDurationInput.value,
+      isLifetime: isLifetimeInput.value,
+      Teacher: TeacherName.value
+  };
 
-    console.log("Selected lifetime value:", isLifetimeInput.value);
-    console.log("Form Values:", formValues);
+  console.log("Selected lifetime value:", isLifetimeInput.value);
+  console.log("Form Values:", formValues);
 
-    try {
-        // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            },
-            body: JSON.stringify(formValues),
-        });
+  try {
+      // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
+      const response = await fetch('http://localhost:9090/user/student/add', {
+          method: 'POST',
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": token
+          },
+          body: JSON.stringify(formValues),
+      });
 
-        if (!response.ok) {
-            throw new Error('Failed to add student. Please try again later.');
-        }
+      if (!response.ok) {
+          throw new Error('Failed to add student. Please try again later.');
+      }
 
-        const data = await response.json();
-        console.log(data);
-        const addStudentModal = document.getElementById('addStudentModal');
-        const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-        alert('Student Added Successfully!!')
-        fetchStudents()
-        modalInstance.hide(); // Hide the modal upon successful addition
-        // window.location.reload()
-    } catch (error) {
-        console.error('Error adding student:', error);
-        alert('Error adding student: ' + error.message);
-        window.location.reload();
-    }
+      const data = await response.json();
+      console.log(data);
+      alert('Student Added Successfully!!')
+      fetchStudents();
+      const addStudentModal = document.getElementById('addStudentModal');
+      const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+      modalInstance.hide(); // Hide the modal upon successful addition
+      
+  } catch (error) {
+      console.error('Error adding student:', error);
+      alert('Error adding student: ' + error.message);
+      window.location.reload();
+  }
 }
 
 
@@ -343,7 +341,7 @@ async function applyFilters() {
 
 async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false, name='') {
 
-    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
+    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -358,7 +356,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         totalPages = data.totalPages;
         console.log(totalPages)
         const assignedUserIds = studentData.map(student => student.assignedUserId);
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${assignedUserIds.join(',')}`,{
+        const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${assignedUserIds.join(',')}`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -426,7 +424,7 @@ async function triggerDownload(data) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+      const response = await fetch('http://localhost:9090/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -462,7 +460,7 @@ async function fetchUsers() {
 // Function to fetch users for checkboxes
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+        const response = await fetch('http://localhost:9090/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -529,7 +527,7 @@ async function handleExtendCourseButtonClick(studentId) {
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`,{
+      const response = await fetch(`http://localhost:9090/user/student/${studentId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -574,7 +572,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
   try {
       // Send PUT request to extend the course
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -768,7 +766,7 @@ function handleAddCourseFormSubmit(event) {
   const courseName2 = document.getElementById('courseName2').value;
 
   // Send an HTTP POST request to the server
-  fetch('https://sensationzmediaarts.onrender.com/courses/add', {
+  fetch('http://localhost:9090/courses/add', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -847,24 +845,76 @@ function clearExtendModel (){
 }
 
 
-async function handleEditStudent(student) {
-  try {
+// async function handleEditStudent(student) {
+//   try {
 
-    localStorage.setItem('StudentData', JSON.stringify(student))
+//     localStorage.setItem('StudentData', JSON.stringify(student))
  
-    window.location = './editStudent.html'
+//     window.location = './editStudent.html'
+//   } catch (error) {
+//     alert(error)
+//     console.error(error);
+//     // Handle error
+//     alert('An error occurred while loading student data. Please try again later.');
+//   }
+// }
+
+
+
+// Function to generate pagination buttons
+
+
+
+
+
+async function handleEditStudent(studentId) {
+  const id = studentId._id
+  try {
+    if (!token) {
+      throw new Error('Authentication token not found.');
+    }
+
+    // Server se student ka data fetch karna
+    const response = await fetch(`http://localhost:9090/student/${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch student data.');
+    }
+
+    const studentData = await response.json();
+
+    // Modal ke input fields me student details ko fill karna
+    document.getElementById('editName').value = studentData.name || '';
+    document.getElementById('editEmail').value = studentData.email || '';
+    document.getElementById('editContact').value = studentData.contact || '';
+    document.getElementById('editAssignedUser').value = studentData.assignedUserId || '';
+    document.getElementById('editCourse').value = studentData.course || '';
+    document.getElementById('editTiming').value = studentData.timing || '';
+    document.getElementById('editCourseStartDate').value = studentData.courseStartDate || '';
+    document.getElementById('editCourseEndDate').value = studentData.courseEndDate || '';
+    document.getElementById('editDateOfPayment').value = studentData.date_of_payment || '';
+    document.getElementById('editState').value = studentData.state || '';
+    document.getElementById('editFee').value = studentData.fee || '';
+    document.getElementById('editCourseDuration').value = studentData.CourseDuration || '';
+    document.getElementById('editTeacherName').value = studentData.Teacher || '';
+
+    // Modal ko display karna
+    const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+    modal.show();
   } catch (error) {
-    alert(error)
-    console.error(error);
-    // Handle error
-    alert('An error occurred while loading student data. Please try again later.');
+    console.error('Error fetching or displaying student data:', error);
+    alert('Failed to fetch or display student data. Please try again.');
   }
 }
 
 
-// PAGINATION KE LIYE YAHA SE WORK KRNA HAIN :----
 
-// Function to generate pagination buttons
+
 function generatePaginationButtons(totalPages) {
   const paginationContainer = document.getElementById('pagination');
   paginationContainer.innerHTML = ''; // Clear existing pagination buttons
@@ -896,7 +946,7 @@ function handleDeleteButtonClick(studentId) {
     // Confirm with the user before deleting the student
     if (confirm('Are you sure you want to delete this student?')) {
         // Send DELETE request to the server
-        fetch(`https://sensationzmediaarts.onrender.com/user/student/delete/${studentId}`, {
+        fetch(`http://localhost:9090/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
