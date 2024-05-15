@@ -12,7 +12,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
     const teacherName = document.getElementById('addteacherName').value;
 
     try {
-        const response = await fetch('http://localhost:9090/teachers/add', {
+        const response = await fetch('https://sensationzmediaarts.onrender.com/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('http://localhost:9090/teachers', {
+  fetch('https://sensationzmediaarts.onrender.com/teachers', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': token
@@ -60,7 +60,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('http://localhost:9090/courses', {
+  fetch('https://sensationzmediaarts.onrender.com/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
@@ -286,7 +286,7 @@ async function addStudent() {
 
   try {
       // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-      const response = await fetch('http://localhost:9090/user/student/add', {
+      const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
           method: 'POST',
           headers: {
               "Content-Type": "application/json",
@@ -341,7 +341,7 @@ async function applyFilters() {
 
 async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false, name='') {
 
-    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
+    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -356,7 +356,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         totalPages = data.totalPages;
         console.log(totalPages)
         const assignedUserIds = studentData.map(student => student.assignedUserId);
-        const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${assignedUserIds.join(',')}`,{
+        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${assignedUserIds.join(',')}`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -424,7 +424,7 @@ async function triggerDownload(data) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('http://localhost:9090/user/allusers', {
+      const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -460,7 +460,7 @@ async function fetchUsers() {
 // Function to fetch users for checkboxes
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('http://localhost:9090/user/allusers', {
+        const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -527,7 +527,7 @@ async function handleExtendCourseButtonClick(studentId) {
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
-      const response = await fetch(`http://localhost:9090/user/student/${studentId}`,{
+      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -572,7 +572,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
   try {
       // Send PUT request to extend the course
-      const response = await fetch(`http://localhost:9090/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -766,7 +766,7 @@ function handleAddCourseFormSubmit(event) {
   const courseName2 = document.getElementById('courseName2').value;
 
   // Send an HTTP POST request to the server
-  fetch('http://localhost:9090/courses/add', {
+  fetch('https://sensationzmediaarts.onrender.com/courses/add', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -845,99 +845,21 @@ function clearExtendModel (){
 }
 
 
-// async function handleEditStudent(student) {
-//   try {
-
-//     localStorage.setItem('StudentData', JSON.stringify(student))
- 
-//     window.location = './editStudent.html'
-//   } catch (error) {
-//     alert(error)
-//     console.error(error);
-//     // Handle error
-//     alert('An error occurred while loading student data. Please try again later.');
-//   }
-// }
-
-
-
-// Function to generate pagination buttons
-
-
-
-
-
-async function handleEditStudent(studentId) {
-  const id = studentId._id
+async function handleEditStudent(student) {
   try {
-    if (!token) {
-      throw new Error('Authentication token not found.');
-    }
 
-    // Server se student ka data fetch karna
-    const response = await fetch(`http://localhost:9090/student/${id}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch student data.');
-    }
-
-    const studentData = await response.json();
-
-    // Modal ke input fields me student details ko fill karna
-    document.getElementById('editName').value = studentData.name || '';
-    document.getElementById('editEmail').value = studentData.email || '';
-    document.getElementById('editContact').value = studentData.contact || '';
-    document.getElementById('editAssignedUser').value = studentData.assignedUserId || '';
-    document.getElementById('editCourse').value = studentData.course || '';
-    document.getElementById('editTiming').value = studentData.timing || '';
-    document.getElementById('editCourseStartDate').value = studentData.courseStartDate || '';
-    document.getElementById('editCourseEndDate').value = studentData.courseEndDate || '';
-    document.getElementById('editDateOfPayment').value = studentData.date_of_payment || '';
-    document.getElementById('editState').value = studentData.state || '';
-    document.getElementById('editFee').value = studentData.fee || '';
-    document.getElementById('editCourseDuration').value = studentData.CourseDuration || '';
-    document.getElementById('editTeacherName').value = studentData.Teacher || '';
-
-    // Modal ko display karna
-    const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
-    modal.show();
+    localStorage.setItem('StudentData', JSON.stringify(student))
+ 
+    window.location = './editStudent.html'
   } catch (error) {
-    console.error('Error fetching or displaying student data:', error);
-    alert('Failed to fetch or display student data. Please try again.');
+    alert(error)
+    console.error(error);
+    // Handle error
+    alert('An error occurred while loading student data. Please try again later.');
   }
 }
 
 
-
-
-function generatePaginationButtons(totalPages) {
-  const paginationContainer = document.getElementById('pagination');
-  paginationContainer.innerHTML = ''; // Clear existing pagination buttons
-  
-  // Generate buttons for each page
-  for (let i = 1; i <= totalPages; i++) {
-    const button = document.createElement('li');
-    button.classList.add('page-item');
-    button.innerHTML = `
-      <button class="page-link" onclick="goToPage(${i})">${i}</button>
-    `;
-    paginationContainer.appendChild(button);
-  }
-}
-
-// Function to handle page change
-function goToPage(pageNumber) {
-  // Perform actions to fetch data for the selected page
-  // For example, make an API request to fetch data for the selected page
-}
-
-// Assume you receive total pages count from backend in a variable named totalPages
-generatePaginationButtons(totalPages);
 
 
 
@@ -946,7 +868,7 @@ function handleDeleteButtonClick(studentId) {
     // Confirm with the user before deleting the student
     if (confirm('Are you sure you want to delete this student?')) {
         // Send DELETE request to the server
-        fetch(`http://localhost:9090/user/student/delete/${studentId}`, {
+        fetch(`https://sensationzmediaarts.onrender.com/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

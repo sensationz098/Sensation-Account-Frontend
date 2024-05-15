@@ -18,6 +18,7 @@
     crossorigin="anonymous"
   ></script>
   
+  
   <style>
     #pagination{
       width: 300px;
@@ -515,6 +516,130 @@
   </div>
         </div>
       </div>
+
+      <!-- Bootstrap Modal -->
+        <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editStudentModalLabel">Edit Student Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editStudentForm">
+          <!-- Student Name -->
+          <div class="mb-3">
+            <label for="editName" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="editName" name="editName" required>
+          </div>
+          
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="editEmail" name="editEmail" required>
+          </div>
+        
+          <!-- Contact -->
+          <div class="mb-3">
+            <label for="editContact" class="form-label">Contact:</label>
+            <input type="tel" class="form-control" id="editContact" name="editContact" required>
+          </div>
+        
+          <!-- Assigned Users Dropdown -->
+          <div class="mb-3">
+            <label for="editAssignedUser" class="form-label">Assigned User:</label>
+            <select class="form-select" id="editAssignedUser" name="editAssignedUser" required>
+              <!-- Assigned users options will be dynamically added here -->
+            </select>
+          </div>
+        
+          <!-- Course Dropdown -->
+          <div class="mb-3">
+            <label for="editCourse" class="form-label">Course:</label>
+            <select class="form-select" id="editCourse" name="editCourse" required>
+            </select>
+          </div>
+        
+          <!-- Timing -->
+          <div class="mb-3">
+            <label for="editTiming" class="form-label">Timing:</label>
+            <select class="form-select" id="editTiming" name="editTiming" required>
+              <option value="Not Confirmed">Not Confirmed</option>
+          <option value="5-6 am (Morning)">5-6 am (Morning)</option>
+          <option value="6-7 am (Morning)">6-7 am (Morning)</option>
+          <option value="7-8 am (Morning)">7-8 am (Morning)</option>
+          <option value="8-9 am (Morning)">8-9 am (Morning)</option>
+          <option value="9-10 am (Morning)">9-10 am (Morning)</option>
+          <option value="10-11 am (Morning)">10-11 am (Morning)</option>
+          <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
+          <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
+          <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
+          <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
+          <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
+          <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
+          <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
+          <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
+          <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
+          <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
+        </select><br>
+            </select>
+          </div>
+        
+          <!-- Course Start Date -->
+          <div class="mb-3">
+            <label for="editCourseStartDate" class="form-label">Course Start Date:</label>
+            <input type="date" class="form-control" id="editCourseStartDate" name="editCourseStartDate" required>
+          </div>
+        
+          <!-- Course End Date -->
+          <div class="mb-3">
+            <label for="editCourseEndDate" class="form-label">Course End Date:</label>
+            <input type="date" class="form-control" id="editCourseEndDate" name="editCourseEndDate" required>
+          </div>
+        
+          <!-- Date of Payment -->
+          <div class="mb-3">
+            <label for="editDateOfPayment" class="form-label">Date of Payment:</label>
+            <input type="date" class="form-control" id="editDateOfPayment" name="editDateOfPayment" required>
+          </div>
+
+          <!-- Teacher Dropdown -->
+          <div class="mb-3">
+            <label for="editTeacherName" class="form-label">Teacher:</label>
+            <select class="form-select" id="editTeacherName" name="editTeacherName" required>
+              <!-- Teacher options will be dynamically added here -->
+            </select>
+          </div>
+        
+          <!-- State Dropdown -->
+          <div class="mb-3">
+            <label for="editState" class="form-label">State:</label>
+            <select class="form-select" id="editState" name="editState" required>
+              <!-- State options will be dynamically added here -->
+            </select>
+          </div>
+        
+          <!-- Fee -->
+          <div class="mb-3">
+            <label for="editFee" class="form-label">Fee:</label>
+            <input type="number" class="form-control" id="editFee" name="editFee" required>
+          </div>
+        
+          <!-- Course Duration -->
+          <div class="mb-3">
+            <label for="editCourseDuration" class="form-label">Course Duration:</label>
+            <input type="text" class="form-control" id="editCourseDuration" name="editCourseDuration" required>
+          </div>
+        
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+        </div>
+
+
+
    <div id="pagination"></div>
 </div>
       </div>

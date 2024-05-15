@@ -172,7 +172,7 @@ uploadBtn.addEventListener('click', function() {
         formData.append('mapping', JSON.stringify(mapping)); // Send mapping data along with the file
         console.log('FormData:', formData);
 
-        fetch('http://localhost:9090/fileupload/upload', {
+        fetch('https://sensationzmediaarts.onrender.com/fileupload/upload', {
             method: 'POST',
             body: formData
         })
