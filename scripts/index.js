@@ -12,7 +12,6 @@ document.querySelector("form").addEventListener("submit", async function (event)
     spinner.innerHTML = '<div class="spinner-grow text-dark" role="status"><span class="visually-hidden">Loading...</span></div>';
     document.body.appendChild(spinner);
 
-    
     // Make a POST request to your backend
     const response = await fetch("https://sensationzmediaarts.onrender.com/auth/login", {
         method: "POST",
@@ -53,6 +52,11 @@ document.querySelector("form").addEventListener("submit", async function (event)
     // Remove the spinner
     document.body.removeChild(spinner);
 });
+
+
+
+
+
 
 
 
