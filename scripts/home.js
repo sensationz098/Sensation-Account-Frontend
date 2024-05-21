@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+
     const username = document.getElementById('username')
     username.textContent = `Hey ${profile.username}`
 
@@ -50,74 +51,68 @@ function isTokenExpired(token) {
 
 
 async function fetchDataAndDisplay(download = false) {
-try {
-const datepickerInput = document.getElementById('datePickerInput');
-const selectedDates = datepickerInput._flatpickr.selectedDates;
+    try {
+        const datepickerInput = document.getElementById('datePickerInput');
+        const selectedDates = datepickerInput._flatpickr.selectedDates;
 
-console.log(selectedDates.length);
+        console.log(selectedDates.length);
 
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-indexed
+        let formattedStartDate = null;
+        let formattedEndDate = null;
+        
+        if (selectedDates.length === 2) {
+            formattedStartDate = formatDate(selectedDates[0]);
+            formattedEndDate = formatDate(selectedDates[1]);
+        } else {
+            formattedStartDate = null;
+            formattedEndDate = null;
+        }
+        
+        console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-const startOfMonth = new Date(currentYear, currentMonth - 1, 1);
-formattedStartDate = formatDate(startOfMonth);
+        const url = `https://sensationzmediaarts.onrender.com/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
-const endOfMonth = new Date(currentYear, currentMonth, 0);
-formattedEndDate = formatDate(endOfMonth);
+        const response = await fetch(url, {
+            headers: {
+                "Content": 'application/json',
+                "Authorization": token
+            }
+        });
+        const { students } = await response.json();
+        console.log(students.length);
+        console.log(students);
+        const userIds = students.map(student => student.assignedUserId);
+        console.log(userIds)
+        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
+            headers: {
+                "Content": 'application/json',
+                "Authorization": token
+            }
+        });
 
-if (selectedDates[0] instanceof Date && !isNaN(selectedDates[0])) {
-formattedStartDate = formatDate(selectedDates[0]);
-}
+        const userName = await userNameResponse.json();
+        console.log('username...', userName)
 
-if (selectedDates[1] instanceof Date && !isNaN(selectedDates[1])) {
-formattedEndDate = formatDate(selectedDates[1]);
-}
+        students.forEach(student => {
+            const user = userName.find(u => u._id === student.assignedUserId);
+            if (user) {
+                student.userName = user.username || 'NA';
+            }
+        });
 
-console.log(`${formattedStartDate} to ${formattedEndDate}`);
+        // Display data in the table
+        displayDataInTable(students, download);
 
-const url = `https://sensationzmediaarts.onrender.com/user/display-and-download?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+        if (download) {
+            triggerDownload();
+        }
 
-const response = await fetch(url, {
-    headers: {
-        "Content": 'application/json',
-        "Authorization": token
+        // console.log('Selected Dates:', formatDateRange);
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
-});
-const { students } = await response.json();
-console.log(students.length);
-console.log(students);
-const userIds = students.map(student => student.assignedUserId);
-console.log(userIds)
-const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
-    headers: {
-        "Content": 'application/json',
-        "Authorization": token
-    }
-});
-
-const userName = await userNameResponse.json();
-console.log('username...', userName)
-
-students.forEach(student => {
-const user = userName.find(u => u._id === student.assignedUserId);
-if (user) {
-    student.userName = user.username || 'NA';
-}
-});
-
-// Display data in the table
-displayDataInTable(students, download);
-
-if (download) {
-triggerDownload();
 }
 
-// console.log('Selected Dates:', formatDateRange);
-} catch (error) {
-console.error('Error fetching data:', error);
-}
-}
 
 
 
