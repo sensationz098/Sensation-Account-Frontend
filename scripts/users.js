@@ -2,11 +2,11 @@ let profile = JSON.parse(localStorage.getItem('Data'))
 const token = profile.token
 
 document.addEventListener("DOMContentLoaded", function () {
-    const apiUrl = "https://sensationzmediaarts.onrender.com/user/allusers";
+    const apiUrl = "http://localhost:9090/user/allusers";
     const usersContainer = document.getElementById("usersContainer");
     let currentUserId = null;
 
-
+ 
 
     if(!profile || !token || isTokenExpired(token)){
         alert('Token has expired! Please log in again. ');
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("New User Data:", newUserData);
 
       // Perform a fetch request to add a new user
-      fetch("https://sensationzmediaarts.onrender.com/auth/signup", {
+      fetch("http://localhost:9090/auth/signup", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ changePasswordForm.addEventListener('submit', function (event) {
     }
 
     // Perform a fetch request to change the password
-    fetch(`https://sensationzmediaarts.onrender.com/user/changePassword/${userId}`, {
+    fetch(`http://localhost:9090/user/changePassword/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ changePasswordForm.addEventListener('submit', function (event) {
 
     // Fetch user details using the global variable currentUserId
     if (currentUserId) {
-      fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${currentUserId}`,{
+      fetch(`http://localhost:9090/user/allusers?id=${currentUserId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -221,7 +221,7 @@ changePasswordForm.addEventListener('submit', function (event) {
         contact: newContact,
       };
 
-      fetch(`https://sensationzmediaarts.onrender.com/user/profile/update/${currentUserId}`, {
+      fetch(`http://localhost:9090/user/profile/update/${currentUserId}`, {
         method: "PUT",
         headers: {
       'Content-Type': 'application/json',

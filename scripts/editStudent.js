@@ -2,7 +2,7 @@ let studentData = JSON.parse(localStorage.getItem('StudentData'));
 let tokenData = JSON.parse(localStorage.getItem('Data'))
 let token = tokenData.token
 
-
+// https://sensationzmediaarts.onrender.com
 
 document.addEventListener('DOMContentLoaded', async function() {
 
@@ -23,7 +23,7 @@ document.getElementById('editTeacherName').value = studentData.Teacher || '';
 
 // Fetch courses from the API
 try {
-    const response = await fetch(`https://sensationzmediaarts.onrender.com/courses`, {
+    const response = await fetch(`http://localhost:9090/courses`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -58,7 +58,7 @@ try {
 
 
 try {
-    const response = await fetch(`https://sensationzmediaarts.onrender.com/teachers`, {
+    const response = await fetch(`http://localhost:9090/teachers`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization':token
@@ -93,7 +93,7 @@ const assignedUserId = studentData.assignedUserId || '';
 
 // Fetch assigned users from the API
 try {
-  const response = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers`, {
+  const response = await fetch(`http://localhost:9090/user/allusers`, {
       headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -152,12 +152,12 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
   };
 
  
-//   https://sensationzmediaarts.onrender.com
+//   http://localhost:9090
 
 
 
   try {
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/edit/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/edit/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',

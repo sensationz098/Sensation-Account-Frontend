@@ -56,7 +56,10 @@
             <label for="assignedUserIdField">Assigned User ID:</label>
             <select id="assignedUserIdField" name="assignedUserId"></select>
         </div>
-     
+        <div class="field">
+            <label for="receiptNumberField">Receipt Number:</label>
+            <select id="receiptNumberField" name="receipt"></select>
+        </div>
     </form>
 </div>
 
@@ -140,7 +143,7 @@ function formatDates(data) {
 
 function generateMappingForm(headers) {
     mappingForm.innerHTML = '<h2>Map Headers</h2>';
-    const fields = ['name', 'contact', 'course', 'date_of_payment', 'courseStartDate', 'courseEndDate', 'fee', 'CourseDuration', 'assignedUserId', 'timing']; // Add 'timing' to the fields array
+    const fields = ['name', 'contact', 'course', 'date_of_payment', 'courseStartDate', 'courseEndDate', 'fee', 'CourseDuration', 'assignedUserId', 'timing', 'receipt']; // Add 'timing' to the fields array
     fields.forEach(field => {
         const fieldLabel = document.createElement('label');
         fieldLabel.textContent = field + ':';
@@ -173,7 +176,7 @@ uploadBtn.addEventListener('click', function() {
         formData.append('mapping', JSON.stringify(mapping)); // Send mapping data along with the file
         console.log('FormData:', formData);
 
-        fetch('https://sensationzmediaarts.onrender.com/fileupload/upload', {
+        fetch('http://localhost:9090/fileupload/upload', {
             method: 'POST',
             body: formData
         })

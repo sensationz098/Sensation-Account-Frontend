@@ -70,7 +70,7 @@ async function fetchDataAndDisplay(download = false) {
         
         console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-        const url = `https://sensationzmediaarts.onrender.com/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+        const url = `http://localhost:9090/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
         const response = await fetch(url, {
             headers: {
@@ -79,11 +79,10 @@ async function fetchDataAndDisplay(download = false) {
             }
         });
         const { students } = await response.json();
-        console.log(students.length);
         console.log(students);
         const userIds = students.map(student => student.assignedUserId);
         console.log(userIds)
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
+        const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${userIds.join(',')}`,{
             headers: {
                 "Content": 'application/json',
                 "Authorization": token

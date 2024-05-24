@@ -12,7 +12,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
     const teacherName = document.getElementById('addteacherName').value;
 
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/teachers/add', {
+        const response = await fetch('http://localhost:9090/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/teachers', {
+  fetch('http://localhost:9090/teachers', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': token
@@ -60,7 +60,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/courses', {
+  fetch('http://localhost:9090/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
@@ -261,6 +261,8 @@ async function addStudent() {
   const courseDurationInput = document.getElementById('CourseDuration');
   const isLifetimeInput = document.getElementById('isLifetime');
   const TeacherName = document.getElementById('TeacherName');
+  const ReceiptNum = document.getElementById('receiptNum')
+
 
   const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
 
@@ -278,7 +280,8 @@ async function addStudent() {
       fee: feeInput.value,
       CourseDuration: courseDurationInput.value,
       isLifetime: isLifetimeInput.value,
-      Teacher: TeacherName.value
+      Teacher: TeacherName.value,
+      receipt: ReceiptNum.value
   };
 
   console.log("Selected lifetime value:", isLifetimeInput.value);
@@ -286,7 +289,7 @@ async function addStudent() {
 
   try {
       // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
+      const response = await fetch('http://localhost:9090/user/student/add', {
           method: 'POST',
           headers: {
               "Content-Type": "application/json",
@@ -341,7 +344,7 @@ async function applyFilters() {
 
 async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false, name='') {
 
-    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
+    let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -356,7 +359,7 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         totalPages = data.totalPages;
         console.log(totalPages)
         const assignedUserIds = studentData.map(student => student.assignedUserId);
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${assignedUserIds.join(',')}`,{
+        const userNameResponse = await fetch(`http://localhost:9090/user/allusers?id=${assignedUserIds.join(',')}`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -424,7 +427,7 @@ async function triggerDownload(data) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+      const response = await fetch('http://localhost:9090/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -460,7 +463,7 @@ async function fetchUsers() {
 // Function to fetch users for checkboxes
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+        const response = await fetch('http://localhost:9090/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -527,7 +530,7 @@ async function handleExtendCourseButtonClick(studentId) {
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`,{
+      const response = await fetch(`http://localhost:9090/user/student/${studentId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -572,7 +575,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
   try {
       // Send PUT request to extend the course
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -766,7 +769,7 @@ function handleAddCourseFormSubmit(event) {
   const courseName2 = document.getElementById('courseName2').value;
 
   // Send an HTTP POST request to the server
-  fetch('https://sensationzmediaarts.onrender.com/courses/add', {
+  fetch('http://localhost:9090/courses/add', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -868,7 +871,7 @@ function handleDeleteButtonClick(studentId) {
     // Confirm with the user before deleting the student
     if (confirm('Are you sure you want to delete this student?')) {
         // Send DELETE request to the server
-        fetch(`https://sensationzmediaarts.onrender.com/user/student/delete/${studentId}`, {
+        fetch(`http://localhost:9090/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
