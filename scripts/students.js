@@ -552,10 +552,11 @@ async function handleExtendCourseButtonClick(studentId) {
               const additionalMonths = Number(document.getElementById('additionalMonths').value);
               const amount = document.getElementById('amount').value;
               const date_of_payment = document.getElementById('dateOfPayment').value;
+              const ExtReceipt = document.getElementById('NewReceipt').value
 
               try {
                   // Send PUT request to extend the course
-                  const updatedStudent = await extendCourse(studentId, additionalMonths, amount, date_of_payment);
+                  const updatedStudent = await extendCourse(studentId, additionalMonths, amount, date_of_payment, ExtReceipt);
                   resolve(updatedStudent); // Resolve the promise with updated student data
                   alert('Student Course Has been Extended');
                   fetchStudents();
@@ -572,7 +573,7 @@ async function handleExtendCourseButtonClick(studentId) {
 
 
 
-async function extendCourse(studentId, additionalMonths, amount, date_of_payment) {
+async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt ) {
   try {
       // Send PUT request to extend the course
       const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
@@ -584,7 +585,8 @@ async function extendCourse(studentId, additionalMonths, amount, date_of_payment
           body: JSON.stringify({
               additionalMonths,
               amount,
-              date_of_payment
+              date_of_payment,
+              NewReceipt
           }),
       });
 
@@ -641,12 +643,16 @@ function displayStudents(students, download) {
       tableHeaders.appendChild(thCreatedAt);
 
       const thPayment = document.createElement('th');
-      thPayment.textContent = `Prev. Course ${i} Payment`;
+      thPayment.textContent = `Extended Course ${i} Amt.`;
       tableHeaders.appendChild(thPayment);
 
       const thDateOfPayment = document.createElement('th');
-      thDateOfPayment.textContent = `Prev. Course ${i} Date Of Payment`;
+      thDateOfPayment.textContent = `Extended Course ${i} Date Of Payment`;
       tableHeaders.appendChild(thDateOfPayment);
+
+      const thNewReceipt = document.createElement('th');
+      thNewReceipt.textContent = `Extended Receipt ${i}`;
+      tableHeaders.appendChild(thNewReceipt);
     }
 
     students.forEach(student => {
@@ -699,6 +705,10 @@ function displayStudents(students, download) {
           const tdDateOfPayment = document.createElement('td');
           tdDateOfPayment.textContent = formatDOP !== undefined ? formatDOP : 'NA';
           tr.appendChild(tdDateOfPayment)
+
+          const tdReceipt = document.createElement('td');
+          tdReceipt.textContent = previousCourse.NewReceipt !== undefined ? previousCourse.NewReceipt : 'NA';
+          tr.appendChild(tdReceipt)
 
         });
       } else {
@@ -845,6 +855,7 @@ function clearExtendModel (){
   document.getElementById('additionalMonths').value = '';
   document.getElementById('amount').value = '';
   document.getElementById('dateOfPayment').value = '';
+  document.getElementById('NewReceipt').value = '';
 }
 
 
