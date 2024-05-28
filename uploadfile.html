@@ -60,6 +60,10 @@
             <label for="receiptNumberField">Receipt Number:</label>
             <select id="receiptNumberField" name="receipt"></select>
         </div>
+        <div class="field">
+            <label for="Counselor">Counselor Name:</label>
+            <select id="Counselor" name="CounselorName"></select>
+        </div>
     </form>
 </div>
 
@@ -143,7 +147,7 @@ function formatDates(data) {
 
 function generateMappingForm(headers) {
     mappingForm.innerHTML = '<h2>Map Headers</h2>';
-    const fields = ['name', 'contact', 'course', 'date_of_payment', 'courseStartDate', 'courseEndDate', 'fee', 'CourseDuration', 'assignedUserId', 'timing', 'receipt']; // Add 'timing' to the fields array
+    const fields = ['name', 'contact', 'course', 'date_of_payment', 'courseStartDate', 'courseEndDate', 'fee', 'CourseDuration', 'assignedUserId', 'timing', 'receipt', 'CounselorName']; // Add 'timing' to the fields array
     fields.forEach(field => {
         const fieldLabel = document.createElement('label');
         fieldLabel.textContent = field + ':';
