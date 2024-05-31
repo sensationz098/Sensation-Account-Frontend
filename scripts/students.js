@@ -1,11 +1,16 @@
 let userToken = JSON.parse(localStorage.getItem('Data'))
    let token = userToken.token
-
+let latestReceipt;
   let totalPages ;
 
 document.addEventListener('DOMContentLoaded', function () {
 
 
+  window.onload = () => {
+    startFetchingLatestReceipt(10000)
+    document.getElementById('addStudent').addEventListener('click', fetchLatestReceipt);
+    
+   }
 
 document.getElementById('addTeacherForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission
@@ -256,66 +261,68 @@ async function addStudent() {
   const courseStartDateInput = document.getElementById('courseStartDate2');
   const courseEndDateInput = document.getElementById('courseEndDate2');
   const dateOfPaymentInput = document.getElementById('date_of_payment');
-  const state = document.getElementById('state')
+  const stateInput = document.getElementById('state');
   const feeInput = document.getElementById('fee');
   const courseDurationInput = document.getElementById('CourseDuration');
   const isLifetimeInput = document.getElementById('isLifetime');
-  const TeacherName = document.getElementById('TeacherName');
-  const ReceiptNum = document.getElementById('receiptNum')
+  const teacherNameInput = document.getElementById('TeacherName');
+  const receiptNumInput = document.getElementById('receiptNum');
 
+  console.log(receiptNumInput.value)
 
-  const contactValue = `${countryCodeInput.value}  ${contactInput.value}`;
+  const contactValue = `${countryCodeInput.value} ${contactInput.value}`;
 
   const formValues = {
-      name: nameInput.value,
-      email: emailInput.value,
-      contact: contactValue, // Use the concatenated value
-      assignedUserId: assignedUserInput.value,
-      course: selectCourseInput.value,
-      timing: timingInput.value,
-      date_of_payment: dateOfPaymentInput.value,
-      state: state.value,
-      courseStartDate: courseStartDateInput.value,
-      courseEndDate: courseEndDateInput.value,
-      fee: feeInput.value,
-      CourseDuration: courseDurationInput.value,
-      isLifetime: isLifetimeInput.value,
-      Teacher: TeacherName.value,
-      receipt: ReceiptNum.value
+    name: nameInput.value,
+    email: emailInput.value,
+    contact: contactValue, // Use the concatenated value
+    assignedUserId: assignedUserInput.value,
+    course: selectCourseInput.value,
+    timing: timingInput.value,
+    date_of_payment: dateOfPaymentInput.value,
+    state: stateInput.value,
+    courseStartDate: courseStartDateInput.value,
+    courseEndDate: courseEndDateInput.value,
+    fee: feeInput.value,
+    CourseDuration: courseDurationInput.value,
+    isLifetime: isLifetimeInput.value,
+    Teacher: teacherNameInput.value,
+    receipt: receiptNumInput.value
   };
 
   console.log("Selected lifetime value:", isLifetimeInput.value);
   console.log("Form Values:", formValues);
 
   try {
-      // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
-          method: 'POST',
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": token
-          },
-          body: JSON.stringify(formValues),
-      });
+    // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
+    const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token
+      },
+      body: JSON.stringify(formValues),
+    });
 
-      if (!response.ok) {
-          throw new Error('Failed to add student. Please try again later.');
-      }
+    if (!response.ok) {
+      throw new Error('Failed to add student. Please try again later.');
+    }
 
-      const data = await response.json();
-      console.log(data);
-      alert('Student Added Successfully!!')
-      fetchStudents();
-      const addStudentModal = document.getElementById('addStudentModal');
-      const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-      modalInstance.hide(); // Hide the modal upon successful addition
-      
+    const data = await response.json();
+    console.log(data);
+    alert('Student Added Successfully!!');
+    fetchStudents();
+    const addStudentModal = document.getElementById('addStudentModal');
+    const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+    modalInstance.hide(); // Hide the modal upon successful addition
+    
   } catch (error) {
-      console.error('Error adding student:', error);
-      alert('Error adding student: ' + error.message);
-      window.location.reload();
+    console.error('Error adding student:', error);
+    alert('Error adding student: ' + error.message);
+    window.location.reload();
   }
 }
+
 
 
 
@@ -522,6 +529,31 @@ function formatDateRange(previousCourse) {
 
     return `${startDate} - ${endDate}`;
 }
+
+
+async function fetchLatestReceipt() {
+      try {
+        const response = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt');
+        if (response.ok) {
+          const data = await response.json();
+          latestReceipt = Number(data.latestReceipt) + 1;
+          console.log('Latest Receipt:', latestReceipt);
+          document.getElementById('NewReceipt').value = latestReceipt;
+          document.getElementById('receiptNum').value = latestReceipt; // Set the input field value
+          
+        } else {
+          console.error('Failed to fetch latest receipt:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching latest receipt:', error);
+      }
+    }
+
+    // Function to start the interval to fetch latest receipt
+    function startFetchingLatestReceipt(interval) {
+      fetchLatestReceipt(); // Initial fetch
+      setInterval(fetchLatestReceipt, interval);
+    }
 
 
 
@@ -765,7 +797,6 @@ function displayStudents(students, download) {
     return; // Return here to prevent further execution of the function if download is true
   }
 
-  // If download is not initiated, proceed with the rest of the function
 }
 
 
@@ -872,7 +903,6 @@ async function handleEditStudent(student) {
     alert('An error occurred while loading student data. Please try again later.');
   }
 }
-
 
 
 

@@ -1,5 +1,6 @@
 let profile = JSON.parse(localStorage.getItem('Data'))
 const token = profile.token
+let latestReceipt = 0 ;
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
    const loginPage = document.getElementById('login-btn').addEventListener('click', ()=>{
     window.location.href = './index.html'
    })
+
+   window.onload = () => {
+    startFetchingLatestReceipt(10000)
+   }
 
    
    
@@ -48,6 +53,25 @@ function isTokenExpired(token) {
     return Date.now() >= expiry * 1000;
 }
 
+
+async function fetchLatestReceipt() {
+    try{
+    const resp = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt')
+    if(resp.ok){
+        const data = await resp.json()
+        latestReceipt = data.latestReceipt;
+        console.log('latest receipt :', latestReceipt)
+    }
+    }
+    catch(err){
+        console.error('Error fetching latest receipt:', error);
+    }
+}
+
+function startFetchingLatestReceipt(interval) {
+    fetchLatestReceipt();
+    setInterval(fetchLatestReceipt, interval);
+}
 
 
 async function fetchDataAndDisplay(download = false) {
