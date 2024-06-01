@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   window.onload = () => {
-    startFetchingLatestReceipt(10000)
+    // startFetchingLatestReceipt(10000)
+    fetchLatestReceipt()
     document.getElementById('addStudent').addEventListener('click', fetchLatestReceipt);
     
    }
@@ -339,19 +340,20 @@ async function applyFilters() {
   const endDate = document.getElementById('endDate').value || '';
   const courseStartDate = document.getElementById('courseStartDate').value || '';
   const courseEndDate = document.getElementById('courseEndDate').value || '';
+  const PaymentDate = document.getElementById('PaymentDate').value || '';
   const courseName = document.getElementById('courseName').value || '';
-  // const creationDate = document.getElementById('creationDate').value || '';
+  const creationDate = document.getElementById('created_at').value || '';
   const courseFee = document.getElementById('courseFee').value || '';
   const contact = document.getElementById('contactcheck').value || '';
 
   // Call fetchStudents function with filter values
-  await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, courseFee, contact);
+  await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, PaymentDate, courseName, creationDate, courseFee, contact);
 }
 
 
-async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', courseName = '',  courseFee = '', contact='', download = false, name='') {
+async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', PaymentDate, courseName = '', creationDate = '', courseFee = '', contact='', download = false) {
 
-    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}&name=${name}`;
+    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&creationDate=${creationDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&PaymentDate=${PaymentDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
     console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
@@ -540,7 +542,6 @@ async function fetchLatestReceipt() {
           console.log('Latest Receipt:', latestReceipt);
           document.getElementById('NewReceipt').value = latestReceipt;
           document.getElementById('receiptNum').value = latestReceipt; // Set the input field value
-          
         } else {
           console.error('Failed to fetch latest receipt:', response.statusText);
         }
@@ -549,16 +550,13 @@ async function fetchLatestReceipt() {
       }
     }
 
-    // Function to start the interval to fetch latest receipt
-    function startFetchingLatestReceipt(interval) {
-      fetchLatestReceipt(); // Initial fetch
-      setInterval(fetchLatestReceipt, interval);
-    }
+
 
 
 
 async function handleExtendCourseButtonClick(studentId) {
   try {
+    fetchLatestReceipt()
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
@@ -903,9 +901,6 @@ async function handleEditStudent(student) {
     alert('An error occurred while loading student data. Please try again later.');
   }
 }
-
-
-
 
 
 function handleDeleteButtonClick(studentId) {
