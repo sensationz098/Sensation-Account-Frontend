@@ -18,7 +18,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
     const teacherName = document.getElementById('addteacherName').value;
 
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/teachers/add', {
+        const response = await fetch('http://localhost:9090/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/teachers', {
+  fetch('http://localhost:9090/teachers', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': token
@@ -66,7 +66,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/courses', {
+  fetch('http://localhost:9090/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
@@ -214,10 +214,11 @@ document.getElementById('downloadRep').addEventListener('click', async () => {
           const courseStartDate = document.getElementById('courseStartDate').value || '';
           const courseEndDate = document.getElementById('courseEndDate').value || '';
           const courseName = document.getElementById('courseName').value || '';
+          const PaymentDate = document.getElementById('PaymentDate').value || ''
           // const creationDate = document.getElementById('creationDate').value || '';
           const courseFee = document.getElementById('courseFee').value || '';
     
-          const studentData = await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, courseFee);
+          const studentData = await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, PaymentDate, courseFee);
     
           // Trigger download with fetched data
           triggerDownload(studentData);
@@ -296,7 +297,7 @@ async function addStudent() {
 
   try {
     // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
-    const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
+    const response = await fetch('http://localhost:9090/user/student/add', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -326,13 +327,6 @@ async function addStudent() {
 
 
 
-
-function searchStudent() {
-  const name = document.getElementById('StudentNameValue').value || '';
-console.log(name)
-  fetchStudents(name)
-}
-
 async function applyFilters() {
   const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
   console.log('Selected User IDs:', selectedUserIds);
@@ -353,8 +347,8 @@ async function applyFilters() {
 
 async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', PaymentDate, courseName = '', creationDate = '', courseFee = '', contact='', download = false) {
 
-    let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&creationDate=${creationDate}&uesrnames=${null}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&PaymentDate=${PaymentDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
-    console.log(queryParams);
+  let queryParams = `http://localhost:9090/user/displaydownload?startDate=${startDate}&endDate=${endDate}&creationDate=${creationDate}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&PaymentDate=${PaymentDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
+  console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
           headers: {
@@ -367,26 +361,6 @@ async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', c
         let studentData = data.students;
         totalPages = data.totalPages;
         console.log(totalPages)
-        const assignedUserIds = studentData.map(student => student.assignedUserId);
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${assignedUserIds.join(',')}`,{
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-        });
-        const userName = await userNameResponse.json();
-  
-        console.log(studentData)
-       
-        
-        studentData.forEach(student => {
-            // console.log(student);
-            const user = userName.find(u => u._id === student.assignedUserId);
-            if (user) {
-                student.assignedUserId = user.username || 'NA';
-                // console.log(student.userName);
-            }
-        });
 
         displayStudents(studentData, download);
         if (download) {
@@ -436,7 +410,7 @@ async function triggerDownload(data) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+      const response = await fetch('http://localhost:9090/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -456,7 +430,7 @@ async function fetchUsers() {
       users.forEach(user => {
           if (user.role === "user") {
               const option = document.createElement('option');
-              option.value = user._id;
+              option.value = user.username;
               option.textContent = user.username; // Modify this according to your user schema
               dropdown2.appendChild(option);
           }
@@ -472,7 +446,7 @@ async function fetchUsers() {
 // Function to fetch users for checkboxes
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+        const response = await fetch('http://localhost:9090/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -487,7 +461,7 @@ async function fetchUsersForCheckboxes() {
 
         const userCheckboxContainer = document.getElementById('userDropdownMenu');
         userCheckboxContainer.innerHTML = ''; // Clear existing checkboxes
-
+        
         users.forEach(user => {
             if (user.role === 'user') {
                 const checkboxDiv = document.createElement('div');
@@ -495,12 +469,12 @@ async function fetchUsersForCheckboxes() {
                 const checkboxInput = document.createElement('input');
                 checkboxInput.type = 'checkbox';
                 checkboxInput.className = 'form-check-input userCheckbox';
-                checkboxInput.value = user._id;
+                checkboxInput.value = user.username;
                 checkboxInput.id = `userCheckbox_${user._id}`;
                 checkboxDiv.appendChild(checkboxInput);
                 const checkboxLabel = document.createElement('label');
                 checkboxLabel.className = 'form-check-label';
-                checkboxLabel.setAttribute('for', `userCheckbox_${user._id}`);
+                checkboxLabel.setAttribute('for', `userCheckbox_${user.username}`);
                 checkboxLabel.textContent = user.username;
                 checkboxDiv.appendChild(checkboxLabel);
                 userCheckboxContainer.appendChild(checkboxDiv);
@@ -535,7 +509,7 @@ function formatDateRange(previousCourse) {
 
 async function fetchLatestReceipt() {
       try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt');
+        const response = await fetch('http://localhost:9090/user/students/latest-receipt');
         if (response.ok) {
           const data = await response.json();
           latestReceipt = Number(data.latestReceipt) + 1;
@@ -560,7 +534,7 @@ async function handleExtendCourseButtonClick(studentId) {
     console.log(studentId)
     clearExtendModel()
       // Fetch student data to display in the modal if needed
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`,{
+      const response = await fetch(`http://localhost:9090/user/student/${studentId}`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -606,7 +580,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt ) {
   try {
       // Send PUT request to extend the course
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`http://localhost:9090/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -808,7 +782,7 @@ function handleAddCourseFormSubmit(event) {
   const courseName2 = document.getElementById('courseName2').value;
 
   // Send an HTTP POST request to the server
-  fetch('https://sensationzmediaarts.onrender.com/courses/add', {
+  fetch('http://localhost:9090/courses/add', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -907,7 +881,7 @@ function handleDeleteButtonClick(studentId) {
     // Confirm with the user before deleting the student
     if (confirm('Are you sure you want to delete this student?')) {
         // Send DELETE request to the server
-        fetch(`https://sensationzmediaarts.onrender.com/user/student/delete/${studentId}`, {
+        fetch(`http://localhost:9090/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -942,6 +916,8 @@ function resetFilters() {
   document.getElementById('courseStartDate').value = '';
   document.getElementById('courseEndDate').value = '';
   document.getElementById('courseName').selectedIndex = 0; // Select the first option (empty option)
+  document.getElementById('PaymentDate').value = '';
+  document.getElementById('created_at').value = '';
   // document.getElementById('creationDate').value = '';
   document.getElementById('courseFee').value = '';
   document.getElementById('contactcheck').value = '';

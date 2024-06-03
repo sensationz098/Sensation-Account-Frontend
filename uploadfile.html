@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/uploadfile.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- https://sensationzmediaarts.onrender.com -->
+    <!-- http://localhost:9090 -->
 
 </head>
 <body>
@@ -180,7 +180,7 @@ uploadBtn.addEventListener('click', function() {
         formData.append('mapping', JSON.stringify(mapping)); // Send mapping data along with the file
         console.log('FormData:', formData);
 
-        fetch('https://sensationzmediaarts.onrender.com/fileupload/upload', {
+        fetch('http://localhost:9090/fileupload/upload', {
             method: 'POST',
             body: formData
         })

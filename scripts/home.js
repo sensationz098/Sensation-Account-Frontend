@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = './index.html'
    })
 
-   window.onload = () => {
-    startFetchingLatestReceipt(10000)
-   }
 
    
    
@@ -54,24 +51,8 @@ function isTokenExpired(token) {
 }
 
 
-async function fetchLatestReceipt() {
-    try{
-    const resp = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt')
-    if(resp.ok){
-        const data = await resp.json()
-        latestReceipt = data.latestReceipt;
-        console.log('latest receipt :', latestReceipt)
-    }
-    }
-    catch(err){
-        console.error('Error fetching latest receipt:', error);
-    }
-}
 
-function startFetchingLatestReceipt(interval) {
-    fetchLatestReceipt();
-    setInterval(fetchLatestReceipt, interval);
-}
+
 
 
 async function fetchDataAndDisplay(download = false) {
@@ -94,7 +75,7 @@ async function fetchDataAndDisplay(download = false) {
         
         console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-        const url = `https://sensationzmediaarts.onrender.com/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+        const url = `http://localhost:9090/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
         const response = await fetch(url, {
             headers: {
@@ -104,24 +85,6 @@ async function fetchDataAndDisplay(download = false) {
         });
         const { students } = await response.json();
         console.log(students);
-        const userIds = students.map(student => student.assignedUserId);
-        console.log(userIds)
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
-            headers: {
-                "Content": 'application/json',
-                "Authorization": token
-            }
-        });
-
-        const userName = await userNameResponse.json();
-        console.log('username...', userName)
-
-        students.forEach(student => {
-            const user = userName.find(u => u._id === student.assignedUserId);
-            if (user) {
-                student.userName = user.username || 'NA';
-            }
-        });
 
         // Display data in the table
         displayDataInTable(students, download);
