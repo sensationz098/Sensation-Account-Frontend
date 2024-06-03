@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   window.onload = () => {
-    // startFetchingLatestReceipt(10000)
     fetchLatestReceipt()
     document.getElementById('addStudent').addEventListener('click', fetchLatestReceipt);
-    
    }
 
 document.getElementById('addTeacherForm').addEventListener('submit', async function(event) {
@@ -341,13 +339,13 @@ async function applyFilters() {
   const contact = document.getElementById('contactcheck').value || '';
 
   // Call fetchStudents function with filter values
-  await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, PaymentDate, courseName, creationDate, courseFee, contact);
+  await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact);
 }
 
 
-async function fetchStudents(selectedUserIds=[], startDate = '', endDate = '', courseStartDate = '', courseEndDate = '', PaymentDate, courseName = '', creationDate = '', courseFee = '', contact='', download = false) {
+async function fetchStudents(startDate = '', endDate = '', selectedUserIds=[], courseStartDate = '', courseEndDate = '',creationDate = '', PaymentDate, courseName = '', courseFee = '', contact='', download = false) {
 
-  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&creationDate=${creationDate}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&PaymentDate=${PaymentDate}&fees=${courseFee}&coursename=${courseName}&usernames=${selectedUserIds}&contact=${contact}`;
+  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}`;
   console.log(queryParams);
     try {
         const response = await fetch(queryParams,{
