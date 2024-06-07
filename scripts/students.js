@@ -127,7 +127,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
       feeInput.value.trim() === '' ||
       courseDurationInput.value.trim() === '' ||
       TeacherInput.value.trim() === '' ||
-      // contactInput.value.trim().length < 10
+      contactInput.value.trim().length < 10
   ) {
       alert('Please fill in all the required fields and ensure the contact number is 10 digits.');
       return; 
