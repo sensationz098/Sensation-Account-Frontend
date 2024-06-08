@@ -96,6 +96,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
   searchStudent()
   })
   
+  
 
   // Add event listener to the "Add Course" form submit event
 document.getElementById('addCourseForm').addEventListener('submit', handleAddCourseFormSubmit);
@@ -359,6 +360,10 @@ async function fetchStudents(startDate = '', endDate = '', selectedUserIds=[], c
         totalPages = data.totalPages;
         console.log(totalPages)
 
+        studentData.forEach(student => {
+          student.fee = parseFloat(student.fee);
+      });
+
         displayStudents(studentData, download);
         if (download) {
             triggerDownload(studentData);
@@ -618,7 +623,7 @@ function displayStudents(students, download) {
 
   if (students.length > 0) {
     // Extract headers from the first student (assuming all students have the same structure)
-    const headers = Object.keys(students[0]).filter(header => header !== '_id' && header !== 'email' && header !== 'previousCourses' && header !== '__v' && header !== 'userId');
+    const headers = Object.keys(students[0]).filter(header => header !== '_id' && header !== 'previousCourses' && header !== '__v' && header !== 'userId');
 
     headers.forEach(header => {
       const th = document.createElement('th');

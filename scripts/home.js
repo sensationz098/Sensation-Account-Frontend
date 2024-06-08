@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
    })
 
    window.onload = () => {
-    startFetchingLatestReceipt(10000)
+    fetchLatestReceipt()
    }
 
-   
+
    
     if(!profile || !token || isTokenExpired(token)){
         alert('Token has expired! Please log in again. ');
@@ -68,10 +68,6 @@ async function fetchLatestReceipt() {
     }
 }
 
-function startFetchingLatestReceipt(interval) {
-    fetchLatestReceipt();
-    setInterval(fetchLatestReceipt, interval);
-}
 
 
 async function fetchDataAndDisplay(download = false) {
@@ -104,23 +100,9 @@ async function fetchDataAndDisplay(download = false) {
         });
         const { students } = await response.json();
         console.log(students);
-        const userIds = students.map(student => student.assignedUserId);
-        console.log(userIds)
-        const userNameResponse = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers?id=${userIds.join(',')}`,{
-            headers: {
-                "Content": 'application/json',
-                "Authorization": token
-            }
-        });
-
-        const userName = await userNameResponse.json();
-        console.log('username...', userName)
 
         students.forEach(student => {
-            const user = userName.find(u => u._id === student.assignedUserId);
-            if (user) {
-                student.userName = user.username || 'NA';
-            }
+            student.fee = parseFloat(student.fee);
         });
 
         // Display data in the table
@@ -149,9 +131,9 @@ tableBody.innerHTML = '';
 
 if (students.length > 0) {
 // Extract headers from the first student (assuming all students have the same structure)
-const headers = Object.keys(students[0]).filter(header => header !== '_id' && header !== 'email' && header !== '__v' && header !== "previousCourses" && header !== 'userId' && header !== 'assignedUserId');
+const headers = Object.keys(students[0]).filter(header => header !== '_id' && header !== '__v' && header !== "previousCourses");
 
-// Create table header cells
+// Create table header cell
 headers.forEach(header => {
 const th = document.createElement('th');
 th.textContent = header;
