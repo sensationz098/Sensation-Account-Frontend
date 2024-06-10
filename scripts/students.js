@@ -201,29 +201,25 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
 
 
 
-document.getElementById('downloadRep').addEventListener('click', async () => {
+    document.getElementById('downloadRep').addEventListener('click', async () => {
       console.log('Download button Clicked!');
     
       try {
-          // Fetch student data
-          const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
-          const startDate = document.getElementById('startDate').value || '';
-          const endDate = document.getElementById('endDate').value || '';
-          const courseStartDate = document.getElementById('courseStartDate').value || '';
-          const courseEndDate = document.getElementById('courseEndDate').value || '';
-          const courseName = document.getElementById('courseName').value || '';
-          const PaymentDate = document.getElementById('PaymentDate').value || ''
-          // const creationDate = document.getElementById('creationDate').value || '';
-          const courseFee = document.getElementById('courseFee').value || '';
+        const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
+        const startDate = document.getElementById('startDate').value || '';
+        const endDate = document.getElementById('endDate').value || '';
+        const courseStartDate = document.getElementById('courseStartDate').value || '';
+        const courseEndDate = document.getElementById('courseEndDate').value || '';
+        const courseName = document.getElementById('courseName').value || '';
+        const PaymentDate = document.getElementById('PaymentDate').value || '';
+        const courseFee = document.getElementById('courseFee').value || '';
+        const contact = document.getElementById('contactcheck').value || '';
     
-          const studentData = await fetchStudents(selectedUserIds, startDate, endDate, courseStartDate, courseEndDate, courseName, PaymentDate, courseFee);
-    
-          // Trigger download with fetched data
-          triggerDownload(studentData);
+        await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, '', PaymentDate, courseName, courseFee, contact, true);
       } catch (error) {
-          console.error('Error fetching or downloading data:', error);
+        console.error('Error fetching or downloading data:', error);
       }
-  });
+    });
   
 
 
@@ -338,73 +334,124 @@ async function applyFilters() {
   const courseFee = document.getElementById('courseFee').value || '';
   const contact = document.getElementById('contactcheck').value || '';
 
-  // Call fetchStudents function with filter values
   await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact);
 }
 
 
-async function fetchStudents(startDate = '', endDate = '', selectedUserIds=[], courseStartDate = '', courseEndDate = '',creationDate = '', PaymentDate, courseName = '', courseFee = '', contact='', download = false) {
 
-  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}`;
+async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', download = false) {
+  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}`;
   console.log(queryParams);
-    try {
-        const response = await fetch(queryParams,{
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-        });
-        const data = await response.json();
-        // console.log(data.students);
-        let studentData = data.students;
-        totalPages = data.totalPages;
-        console.log(totalPages)
 
-        studentData.forEach(student => {
-          student.fee = parseFloat(student.fee);
-      });
+  try {
+    const response = await fetch(queryParams, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    });
+    const data = await response.json();
+    let studentData = data.students;
+    totalPages = data.totalPages;
+    console.log(totalPages);
 
-        displayStudents(studentData, download);
-        if (download) {
-            triggerDownload(studentData);
-        }
-        return studentData;
-    } catch (error) {
-        console.error('Error fetching students:', error);
-        return []
+    studentData.forEach(student => {
+      student.fee = parseFloat(student.fee);
+    });
+
+    displayStudents(studentData, download);
+    if (download) {
+      triggerDownload(studentData);
     }
+    return studentData;
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    return [];
+  }
 }
 
 
 
-async function triggerDownload(data) {
+
+async function triggerDownload(students) {
   try {
-      // Generate Excel workbook
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(data);
+    // Generate Excel workbook
+    const wb = XLSX.utils.book_new();
 
-      // Add the worksheet to the workbook
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // Determine the maximum number of previous courses and collect all unique fields
+    let maxPreviousCourses = 0;
+    let allFields = new Set();
 
-      // Save the workbook as an Excel file
-      const excelFileBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    students.forEach(student => {
+      Object.keys(student).forEach(field => allFields.add(field));
 
-      // Convert the array buffer to a Blob
-      const blob = new Blob([excelFileBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      if (student.previousCourses && student.previousCourses.length > maxPreviousCourses) {
+        maxPreviousCourses = student.previousCourses.length;
+      }
 
-      // Create download link and trigger download
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'report.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      student.previousCourses.forEach(prevCourse => {
+        Object.keys(prevCourse).forEach(field => allFields.add(`prevCourse_${field}`));
+      });
+    });
 
-      console.log('Download successful');
+    // Convert the Set to an array for easier processing
+    allFields = Array.from(allFields);
+
+    // Prepare the data
+    const data = students.map(student => {
+      const row = {};
+
+      // Add student fields
+      allFields.forEach(field => {
+        if (field.startsWith('prevCourse_')) {
+          const prevCourseField = field.replace('prevCourse_', '');
+          row[field] = 'NA';
+          student.previousCourses.forEach((prevCourse, index) => {
+            row[`${field}${index + 1}`] = prevCourse[prevCourseField] || 'NA';
+          });
+        } else {
+          row[field] = student[field] !== undefined ? student[field] : 'NA';
+        }
+      });
+
+      // Fill empty columns for students with fewer previous courses
+      for (let i = student.previousCourses.length; i < maxPreviousCourses; i++) {
+        allFields.forEach(field => {
+          if (field.startsWith('prevCourse_')) {
+            const prevCourseField = field.replace('prevCourse_', '');
+            row[`${field}${i + 1}`] = 'NA';
+          }
+        });
+      }
+
+      return row;
+    });
+
+    // Create a worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // Save the workbook as an Excel file
+    const excelFileBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the array buffer to a Blob
+    const blob = new Blob([excelFileBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Create download link and trigger download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'students.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    console.log('Download successful');
   } catch (error) {
-      console.error('Error during download:', error);
+    console.error('Error during download:', error);
   }
 }
 
