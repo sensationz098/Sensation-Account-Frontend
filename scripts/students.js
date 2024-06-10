@@ -378,50 +378,44 @@ async function triggerDownload(students) {
     // Generate Excel workbook
     const wb = XLSX.utils.book_new();
 
-    // Determine the maximum number of previous courses and collect all unique fields
+    // Determine the maximum number of previous courses
     let maxPreviousCourses = 0;
-    let allFields = new Set();
-
     students.forEach(student => {
-      Object.keys(student).forEach(field => allFields.add(field));
-
       if (student.previousCourses && student.previousCourses.length > maxPreviousCourses) {
         maxPreviousCourses = student.previousCourses.length;
       }
-
-      student.previousCourses.forEach(prevCourse => {
-        Object.keys(prevCourse).forEach(field => allFields.add(`prevCourse_${field}`));
-      });
     });
-
-    // Convert the Set to an array for easier processing
-    allFields = Array.from(allFields);
 
     // Prepare the data
     const data = students.map(student => {
-      const row = {};
+      const row = {
+        name: student.name,
+        contact: student.contact,
+        email: student.email,
+        course: student.course,
+        courseStartDate: student.courseStartDate,
+        courseEndDate: student.courseEndDate,
+        fee: student.fee,
+        CourseDuration: student.CourseDuration,
+        courseExtended: student.previousCourses.length > 0 ? "Yes" : "No"
+      };
 
-      // Add student fields
-      allFields.forEach(field => {
-        if (field.startsWith('prevCourse_')) {
-          const prevCourseField = field.replace('prevCourse_', '');
-          row[field] = 'NA';
-          student.previousCourses.forEach((prevCourse, index) => {
-            row[`${field}${index + 1}`] = prevCourse[prevCourseField] || 'NA';
-          });
-        } else {
-          row[field] = student[field] !== undefined ? student[field] : 'NA';
-        }
+      // Add previous courses data
+      student.previousCourses.forEach((prevCourse, index) => {
+        row[`prevCourse${index + 1}Start`] = prevCourse.start || 'NA';
+        row[`prevCourse${index + 1}End`] = prevCourse.end || 'NA';
+        row[`prevCourse${index + 1}Amount`] = prevCourse.amount || 'NA';
+        row[`prevCourse${index + 1}Payment`] = prevCourse.date_of_payment || 'NA';
+        row[`prevCourse${index + 1}Receipt`] = prevCourse.NewReceipt || 'NA';
       });
 
       // Fill empty columns for students with fewer previous courses
       for (let i = student.previousCourses.length; i < maxPreviousCourses; i++) {
-        allFields.forEach(field => {
-          if (field.startsWith('prevCourse_')) {
-            const prevCourseField = field.replace('prevCourse_', '');
-            row[`${field}${i + 1}`] = 'NA';
-          }
-        });
+        row[`prevCourse${i + 1}Start`] = 'NA';
+        row[`prevCourse${i + 1}End`] = 'NA';
+        row[`prevCourse${i + 1}Amount`] = 'NA';
+        row[`prevCourse${i + 1}Payment`] = 'NA';
+        row[`prevCourse${i + 1}Receipt`] = 'NA';
       }
 
       return row;
