@@ -396,12 +396,13 @@ async function triggerDownload(students) {
         assignedUserId: student.assignedUserId,
         isLifetime: student.isLifetime,
         course: student.course,
+        timing: student.timing,
         date_of_payment: student.date_of_payment,
         courseStartDate: student.courseStartDate,
         courseEndDate: student.courseEndDate,
         fee: student.fee,
         CourseDuration: student.CourseDuration,
-        Techer: student.Teacher,
+        Teacher: student.Teacher,
         state: student.state,
         courseExtended: student.previousCourses.length > 0 ? "Yes" : "No"
       };
