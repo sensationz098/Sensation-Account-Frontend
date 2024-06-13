@@ -44,23 +44,30 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/teachers', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    }
+
+fetch('https://sensationzmediaarts.onrender.com/teachers', {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  }
+})
+.then(res => res.json())
+.then(data => {
+  const selectTeacher = document.getElementById('TeacherName');
+  const selectTeacher2 = document.getElementById('teacherSelect'); // New select tag
+  data.forEach(teacher => {
+    const option = document.createElement('option')
+    option.textContent = teacher.TeacherName
+    option.value = teacher.TeacherName
+    selectTeacher.appendChild(option)
+
+    const option2 = document.createElement('option') // Create option for the new select tag
+    option2.textContent = teacher.TeacherName
+    option2.value = teacher.TeacherName
+    selectTeacher2.appendChild(option2) // Append option to the new select tag
   })
-  .then(res => res.json())
-  .then(data => {
-    const selectTeacher = document.getElementById('TeacherName');
-    data.forEach(teacher => {
-      const option = document.createElement('option')
-      option.textContent = teacher.TeacherName
-      option.value = teacher.TeacherName
-      selectTeacher.appendChild(option)
-    })
-  })
-   .catch(err => console.log(err))
+})
+.catch(err => console.log(err))
 
 
 
@@ -211,11 +218,14 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
         const courseStartDate = document.getElementById('courseStartDate').value || '';
         const courseEndDate = document.getElementById('courseEndDate').value || '';
         const courseName = document.getElementById('courseName').value || '';
+        const CreationDate = document.getElementById('created_at').value || ''
         const PaymentDate = document.getElementById('PaymentDate').value || '';
         const courseFee = document.getElementById('courseFee').value || '';
         const contact = document.getElementById('contactcheck').value || '';
+        const teacher = document.getElementById('teacherSelect').value || '';
+        const timing = document.getElementById('timingSelect').value || '';
     
-        await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, '', PaymentDate, courseName, courseFee, contact, true);
+        await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, CreationDate, PaymentDate, courseName, courseFee, contact, teacher, timing, true);
       } catch (error) {
         console.error('Error fetching or downloading data:', error);
       }
@@ -321,6 +331,7 @@ async function addStudent() {
 
 
 
+
 async function applyFilters() {
   const selectedUserIds = Array.from(document.querySelectorAll('.userCheckbox:checked')).map(checkbox => checkbox.value);
   console.log('Selected User IDs:', selectedUserIds);
@@ -333,14 +344,16 @@ async function applyFilters() {
   const creationDate = document.getElementById('created_at').value || '';
   const courseFee = document.getElementById('courseFee').value || '';
   const contact = document.getElementById('contactcheck').value || '';
+  const teacher = document.getElementById('teacherSelect').value || '';
+  const timing = document.getElementById("timingSelect").value || '';
 
-  await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact);
+  await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact, teacher, timing);
 }
 
 
 
-async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', download = false) {
-  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}`;
+async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', teacher = '', timing = '', download = false) {
+  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}&teacher=${teacher}&timing=${timing}`;
   console.log(queryParams);
 
   try {
@@ -369,7 +382,6 @@ async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [],
     return [];
   }
 }
-
 
 
 
@@ -970,6 +982,8 @@ function resetFilters() {
   document.getElementById('created_at').value = '';
   document.getElementById('courseFee').value = '';
   document.getElementById('contactcheck').value = '';
+  document.getElementById('teacherSelect').selectedIndex = 0;
+  document.getElementById('timingSelect').selectedIndex = 0;
 
   fetchStudents()
 }
