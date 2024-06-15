@@ -82,6 +82,23 @@
           </button>
           <div id="filterDiv">
             <form id="filtersForm">
+
+              <button
+              type="button"    
+              class="btn btn-outline-primary"
+              onclick="applyFilters()"
+            >
+              Apply Filters
+            </button>
+            <button
+              type="button"
+              id="resetFiltersBtn"
+              class="btn btn-outline-secondary"
+              onclick="resetFilters()"
+            >
+              Reset Filters
+            </button>
+            
               <div class="mb-3">
                 <label for="userDropdown" class="form-label"
                   >Select Users:</label
@@ -102,6 +119,67 @@
                   </div>
                 </div>
               </div>
+
+              <div class="mb-3">
+                <label for="contactcheck" class="form-label"
+                  >Contact:</label
+                >
+                <input type="tel" id="contactcheck" name="contactcheck" />
+              </div>
+
+              <div class="mb-3">
+                <label for="timingSelect" class="form-label"
+                  >Select Timing:</label
+                >
+                <select name="timingSelect" id="timingSelect">
+                  <option value="">Select Timing</option>
+                  <option value="5-6 am (Morning)">Not Confirmed</option>
+                          <option value="5-6 am (Morning)">5-6 am (Morning)</option>
+                          <option value="6-7 am (Morning)">6-7 am (Morning)</option>
+                          <option value="7-8 am (Morning)">7-8 am (Morning)</option>
+                          <option value="8-9 am (Morning)">8-9 am (Morning)</option>
+                          <option value="9-10 am (Morning)">9-10 am (Morning)</option>
+                          <option value="10-11 am (Morning)">10-11 am (Morning)</option>
+                          <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
+                          <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
+                          <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
+                          <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
+                          <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
+                          <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
+                          <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
+                          <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
+                          <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
+                          <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
+                </select>
+              </div>
+  
+
+              <div class="mb-3">
+                <label for="PaymentDate" class="form-label"
+                  >Payment Date:</label
+                >
+                <input type="date" id="PaymentDate" name="PaymentDate" />
+              </div>
+
+
+              <div class="mb-3">
+                <label for="courseName" class="form-label">Course Name:</label>
+                <select id="courseName" name="courseName">
+                    <option value="">Select a course</option> <!-- Empty option -->
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+              <label for="teacherSelect" class="form-label"
+                >Select Teacher:</label
+              >
+              <select name="teacherSelect" id="teacherSelect">
+                <option value="">Select Teachers</option>
+              </select>
+            </div>
+
+
               <div class="mb-3">
                 <label for="dateRange" class="form-label">Date Range:</label>
                 <input type="date" id="startDate" name="startDate" /> to
@@ -126,13 +204,6 @@
                 <input type="date" id="courseEndDate" name="courseEndDate" />
               </div>
 
-              <div class="mb-3">
-                <label for="PaymentDate" class="form-label"
-                  >Payment Date:</label
-                >
-                <input type="date" id="PaymentDate" name="PaymentDate" />
-              </div>
-
 
 
               <div class="mb-3">
@@ -143,48 +214,8 @@
               </div>                                                 
 
 
-              <div class="mb-3">
-                <label for="courseName" class="form-label">Course Name:</label>
-                <select id="courseName" name="courseName">
-                    <option value="">Select a course</option> <!-- Empty option -->
-                </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="teacherSelect" class="form-label"
-                >Select Teacher:</label
-              >
-              <select name="teacherSelect" id="teacherSelect">
-                <option value="">Select Teachers</option>
-              </select>
-            </div>
 
 
-            <div class="mb-3">
-              <label for="timingSelect" class="form-label"
-                >Select Timing:</label
-              >
-              <select name="timingSelect" id="timingSelect">
-                <option value="">Select Timing</option>
-                <option value="5-6 am (Morning)">Not Confirmed</option>
-                        <option value="5-6 am (Morning)">5-6 am (Morning)</option>
-                        <option value="6-7 am (Morning)">6-7 am (Morning)</option>
-                        <option value="7-8 am (Morning)">7-8 am (Morning)</option>
-                        <option value="8-9 am (Morning)">8-9 am (Morning)</option>
-                        <option value="9-10 am (Morning)">9-10 am (Morning)</option>
-                        <option value="10-11 am (Morning)">10-11 am (Morning)</option>
-                        <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
-                        <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
-                        <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
-                        <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
-                        <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
-                        <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
-                        <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
-                        <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
-                        <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
-                        <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
-              </select>
-            </div>
 
               <div class="mb-3">
                 <label for="courseFee" class="form-label"
@@ -193,29 +224,7 @@
                 <input type="number" id="courseFee" name="courseFee" />
               </div>
 
-              <div class="mb-3">
-                <label for="contactcheck" class="form-label"
-                  >Contact:</label
-                >
-                <input type="tel" id="contactcheck" name="contactcheck" />
-              </div>
 
-              
-              <button
-                type="button"    
-                class="btn btn-outline-primary"
-                onclick="applyFilters()"
-              >
-                Apply Filters
-              </button>
-              <button
-                type="button"
-                id="resetFiltersBtn"
-                class="btn btn-outline-secondary"
-                onclick="resetFilters()"
-              >
-                Reset Filters
-              </button>
             </form>
           </div>
         </div>
