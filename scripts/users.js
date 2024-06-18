@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
 
+    
 
     addUserForm.addEventListener("submit", function (event) {
       event.preventDefault();
