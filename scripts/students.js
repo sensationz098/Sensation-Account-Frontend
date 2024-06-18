@@ -406,6 +406,7 @@ async function triggerDownload(students) {
         email: student.email,
         receipt: student.receipt,
         assignedUserId: student.assignedUserId,
+        CounselorName: student.CounselorName,
         isLifetime: student.isLifetime,
         course: student.course,
         timing: student.timing,
