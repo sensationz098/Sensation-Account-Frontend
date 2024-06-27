@@ -224,8 +224,9 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
         const contact = document.getElementById('contactcheck').value || '';
         const teacher = document.getElementById('teacherSelect').value || '';
         const timing = document.getElementById('timingSelect').value || '';
+        const receipt = document.getElementById('Receipt').value || '';
     
-        await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, CreationDate, PaymentDate, courseName, courseFee, contact, teacher, timing, true);
+        await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, CreationDate, PaymentDate, courseName, courseFee, contact, teacher, timing, receipt, true);
       } catch (error) {
         console.error('Error fetching or downloading data:', error);
       }
@@ -346,14 +347,15 @@ async function applyFilters() {
   const contact = document.getElementById('contactcheck').value || '';
   const teacher = document.getElementById('teacherSelect').value || '';
   const timing = document.getElementById("timingSelect").value || '';
+  const Receipt = document.getElementById('Receipt').value || '';
 
-  await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact, teacher, timing);
+  await fetchStudents(startDate, endDate, selectedUserIds, courseStartDate, courseEndDate, creationDate, PaymentDate, courseName, courseFee, contact, teacher, timing, Receipt);
 }
 
 
 
-async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', teacher = '', timing = '', download = false) {
-  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}&teacher=${teacher}&timing=${timing}`;
+async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', teacher = '', timing = '', Receipt = '', download = false) {
+  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}&teacher=${teacher}&timing=${timing}&receipt=${Receipt}`;
   console.log(queryParams);
 
   try {
@@ -985,6 +987,7 @@ function resetFilters() {
   document.getElementById('contactcheck').value = '';
   document.getElementById('teacherSelect').selectedIndex = 0;
   document.getElementById('timingSelect').selectedIndex = 0;
+  document.getElementById('Receipt').value = '';
 
   fetchStudents()
 }
