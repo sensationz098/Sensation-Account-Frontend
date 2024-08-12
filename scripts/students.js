@@ -593,56 +593,119 @@ async function fetchLatestReceipt() {
 
 
 
-async function handleExtendCourseButtonClick(studentId) {
-  try {
-    fetchLatestReceipt()
-    console.log(studentId)
-    clearExtendModel()
-      // Fetch student data to display in the modal if needed
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        }
-      });
-      const studentData = await response.json();
-      console.log(studentData);
-      // Populate modal with student data if needed
-
-      // Open the extend course modal
-      const extendCourseModal = new bootstrap.Modal(document.getElementById('extendCourseModal'));
-      extendCourseModal.show();
-
-      return new Promise((resolve, reject) => {
+    async function handleExtendCourseButtonClick(studentId) {
+      try {
+        fetchLatestReceipt()
+        console.log(studentId)
+        clearExtendModel();
+        // Fetch student data to display in the modal if needed
+        const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        });
+        const studentData = await response.json();
+    
+        // Open the extend course modal
+        const extendCourseModal = new bootstrap.Modal(document.getElementById('extendCourseModal'));
+        extendCourseModal.show();
+    
+        // Populate the select tag with student state as the first option
+        const student_email = document.getElementById('student_email').value = studentData.email
+        const stateSelect = document.getElementById('student_state');
+        stateSelect.innerHTML = ''; // Clear existing options
+    
+        // Add the student state as the first option
+        const studentStateOption = document.createElement('option');
+        studentStateOption.value = studentData.state;
+        studentStateOption.textContent = studentData.state;
+        studentStateOption.selected = true;
+        stateSelect.appendChild(studentStateOption);
+    
+        // Add other options (replace this part with actual options)
+        const otherStates = [
+          'Andaman and Nicobar Islands',
+          'Andhra Pradesh',
+          'Arunachal Pradesh',
+          'Assam',
+          'Bihar',
+          'Chandigarh',
+          'Chhattisgarh',
+          'Dadra and Nagar Haveli and Daman and Diu',
+          'Delhi',
+          'Goa',
+          'Gujarat',
+          'Haryana',
+          'Himachal Pradesh',
+          'Jammu and Kashmir',
+          'Jharkhand',
+          'Karnataka',
+          'Kerala',
+          'Ladakh',
+          'Lakshadweep',
+          'Madhya Pradesh',
+          'Maharashtra',
+          'Manipur',
+          'Meghalaya',
+          'Mizoram',
+          'Nagaland',
+          'Odisha',
+          'Puducherry',
+          'Punjab',
+          'Rajasthan',
+          'Sikkim',
+          'Tamil Nadu',
+          'Telangana',
+          'Tripura',
+          'Uttar Pradesh',
+          'Uttarakhand',
+          'West Bengal'
+        ];
+        
+        otherStates.forEach(state => {
+          if (state !== studentData.state) {
+            const option = document.createElement('option');
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+          }
+        });
+    
+        return new Promise((resolve, reject) => {
           // Add event listener to the "Extend Course" button inside the modal
           const extendCourseBtn = document.getElementById('extendCourseBtn');
           extendCourseBtn.onclick = async () => {
-              // Get input values from the modal
-              const additionalMonths = Number(document.getElementById('additionalMonths').value);
-              const amount = document.getElementById('amount').value;
-              const date_of_payment = document.getElementById('dateOfPayment').value;
-              const ExtReceipt = document.getElementById('NewReceipt').value
+            // Get input values from the modal
+            const additionalMonths = Number(document.getElementById('additionalMonths').value);
+            const amount = document.getElementById('amount').value;
+            const date_of_payment = document.getElementById('dateOfPayment').value;
+            const ExtReceipt = document.getElementById('NewReceipt').value;
+            const student_email = document.getElementById('student_email').value;
+            const student_state = document.getElementById('student_state').value;
 
-              try {
-                  // Send PUT request to extend the course
-                  const updatedStudent = await extendCourse(studentId, additionalMonths, amount, date_of_payment, ExtReceipt);
-                  resolve(updatedStudent); // Resolve the promise with updated student data
-                  alert('Student Course Has been Extended');
-                  fetchStudents();
-              } catch (error) {
-                  reject(error); // Reject the promise if there is an error
-              }
+            try {
+              // Send PUT request to extend the course
+              const updatedStudent = await extendCourse(studentId, additionalMonths, amount, date_of_payment, ExtReceipt, student_email, student_state);
+              resolve(updatedStudent); // Resolve the promise with updated student data
+              alert('Student Course Has been Extended');
+              fetchStudents();
+            } catch (error) {
+              reject(error); // Reject the promise if there is an error
+            }
           };
-      });
-  } catch (error) {
-      console.error('Error fetching student data:', error);
-      throw error; // Throw error for further handling
-  }
-}
+        });
+      } catch (error) {
+        console.error('Error fetching student data:', error);
+        throw error; // Throw error for further handling
+      }
+    }
+    
 
 
 
-async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt ) {
+
+async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt, email, state ) {
   try {
       // Send PUT request to extend the course
       const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
@@ -655,7 +718,9 @@ async function extendCourse(studentId, additionalMonths, amount, date_of_payment
               additionalMonths,
               amount,
               date_of_payment,
-              NewReceipt
+              NewReceipt,
+              email,
+              state
           }),
       });
 
