@@ -6,6 +6,24 @@ let latestReceipt;
 document.addEventListener('DOMContentLoaded', function () {
 
 
+
+
+  const dateOfPaymentInput = document.getElementById('date_of_payment');
+  const assignedUserInput = document.getElementById('assignedUser2');
+  
+  const lastDateOfPayment = localStorage.getItem('lastDateOfPayment');
+  const lastAssignedUser = localStorage.getItem('lastAssignedUser');
+
+  if (lastDateOfPayment) {
+    dateOfPaymentInput.value = lastDateOfPayment;
+  }
+
+  if (lastAssignedUser) {
+    assignedUserInput.value = lastAssignedUser;
+  }
+
+
+
   window.onload = () => {
     fetchLatestReceipt()
     document.getElementById('addStudent').addEventListener('click', fetchLatestReceipt);
@@ -150,11 +168,11 @@ document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', f
   document.getElementById('name').value = '';
   document.getElementById('email').value = '';
   document.getElementById('contact').value = '';
-  document.getElementById('assignedUser2').selectedIndex = 0; // Select the first option in the dropdown
+  // document.getElementById('assignedUser2').selectedIndex = 0; // Select the first option in the dropdown
   document.getElementById('selectCourse').selectedIndex = 0; // Select the first option in the dropdown
   document.getElementById('courseStartDate2').value = '';
   document.getElementById('courseEndDate2').value = '';
-  document.getElementById('date_of_payment').value = '';
+  // document.getElementById('date_of_payment').value = '';
   document.getElementById('state').value = '';
   document.getElementById('fee').value = '';
   document.getElementById('CourseDuration').value = '';
@@ -234,7 +252,7 @@ document.getElementById('filtersForm').addEventListener('submit', function (e) {
   
 
 
-  function calculateEndDate() {
+function calculateEndDate() {
   // Get the course start date and duration from the form
   const startDateString = document.getElementById('courseStartDate2').value;
   const durationInMonths = parseInt(document.getElementById('CourseDuration').value);
@@ -260,7 +278,7 @@ document.getElementById('CourseDuration').addEventListener('input', calculateEnd
 async function addStudent() {
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
-  const countryCodeInput = document.getElementById('countryCode'); // New line to get country code
+  const countryCodeInput = document.getElementById('countryCode');
   const contactInput = document.getElementById('contact');
   const assignedUserInput = document.getElementById('assignedUser2');
   const selectCourseInput = document.getElementById('selectCourse');
@@ -275,14 +293,12 @@ async function addStudent() {
   const teacherNameInput = document.getElementById('TeacherName');
   const receiptNumInput = document.getElementById('receiptNum');
 
-  console.log(receiptNumInput.value)
-
   const contactValue = `${countryCodeInput.value} ${contactInput.value}`;
 
   const formValues = {
     name: nameInput.value,
     email: emailInput.value,
-    contact: contactValue, // Use the concatenated value
+    contact: contactValue,
     assignedUserId: assignedUserInput.value,
     course: selectCourseInput.value,
     timing: timingInput.value,
@@ -297,11 +313,14 @@ async function addStudent() {
     receipt: receiptNumInput.value
   };
 
+  // Save last entered values to local storage
+  localStorage.setItem('lastDateOfPayment', dateOfPaymentInput.value);
+  localStorage.setItem('lastAssignedUser', assignedUserInput.value);
+
   console.log("Selected lifetime value:", isLifetimeInput.value);
   console.log("Form Values:", formValues);
 
   try {
-    // Use fetch or your preferred AJAX library to submit form data to the /student/add endpoint
     const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
       method: 'POST',
       headers: {
@@ -321,7 +340,7 @@ async function addStudent() {
     fetchStudents();
     const addStudentModal = document.getElementById('addStudentModal');
     const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-    modalInstance.hide(); // Hide the modal upon successful addition
+    modalInstance.hide();
     
   } catch (error) {
     console.error('Error adding student:', error);
@@ -487,6 +506,7 @@ async function fetchUsers() {
       }
 
       const users = await response.json();
+      users.sort((a,b) => a.name - b.name)
       console.log(users);
 
       const dropdown2 = document.getElementById('assignedUser2');
@@ -591,9 +611,7 @@ async function fetchLatestReceipt() {
 
 
 
-
-
-    async function handleExtendCourseButtonClick(studentId) {
+async function handleExtendCourseButtonClick(studentId) {
       try {
         fetchLatestReceipt()
         console.log(studentId)
@@ -700,10 +718,7 @@ async function fetchLatestReceipt() {
         throw error; // Throw error for further handling
       }
     }
-    
-
-
-
+  
 
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt, email, state ) {
   try {
