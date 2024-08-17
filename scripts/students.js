@@ -1,13 +1,11 @@
 let userToken = JSON.parse(localStorage.getItem('Data'))
-   let token = userToken.token
-let latestReceipt;
+  let token = userToken.token
+  let latestReceipt;
   let totalPages ;
 
 document.addEventListener('DOMContentLoaded', function () {
 
-
-
-
+  
   const dateOfPaymentInput = document.getElementById('date_of_payment');
   const assignedUserInput = document.getElementById('assignedUser2');
   
@@ -817,6 +815,19 @@ function displayStudents(students, download) {
               td.textContent = student[header] !== undefined ? student[header] : 'NA';
           }
           tr.appendChild(td);
+
+
+          if(header === 'contact'){
+            // Make the 'contact' column clickable with a link
+    if (header === 'contact') {
+      td.innerHTML = ''; // Clear the existing content
+      const contactLink = document.createElement('a');
+      contactLink.textContent = student.contact;
+      contactLink.href = '#';
+      contactLink.addEventListener('click', () => handleEditStudent(student, student.assignedUserName));
+      td.appendChild(contactLink);
+    }
+          }
       });
   
       // Replace the content of the "name" column with a hyperlinked version
@@ -829,7 +840,8 @@ function displayStudents(students, download) {
       nameTd.appendChild(nameLink);
   
       // Add Edit button, Extend Course button, and Delete button as before
-  
+
+    
       tableBody.appendChild(tr);
       
 
