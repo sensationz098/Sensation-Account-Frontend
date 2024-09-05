@@ -129,6 +129,7 @@ document.getElementById('addCourseForm').addEventListener('submit', handleAddCou
 document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
+  // Get form fields
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
   const contactInput = document.getElementById('contact');
@@ -139,7 +140,11 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
   const feeInput = document.getElementById('fee');
   const courseDurationInput = document.getElementById('CourseDuration');
   const TeacherInput = document.getElementById('TeacherName');
+  
+  // Get submit button
+  const submitButton = document.getElementById("addStudent2");
 
+  // Form field validation
   if (
       nameInput.value.trim() === '' ||
       emailInput.value.trim() === '' ||
@@ -156,11 +161,32 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
       return; 
   }
 
-  const addStudentModal = document.getElementById('addStudentModal');
-  const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-  modalInstance.show(); // Modal ko open rakhna
-  await addStudent(); // Form submit ke baad student add karna
+  // Disable the submit button to prevent multiple submissions
+  submitButton.disabled = true;
+  submitButton.innerText = 'Submitting...';
+
+  try {
+    const addStudentModal = document.getElementById('addStudentModal');
+    const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+    
+    // Show the modal
+    modalInstance.show();
+    
+    // Call the function to add a student (assuming it makes an API call)
+    await addStudent();
+    
+    // Reset the form after successful submission
+    document.getElementById('addStudentForm').reset();
+  } catch (error) {
+    console.error('Error adding student:', error);
+    alert('An error occurred while adding the student.');
+  } finally {
+    // Re-enable the submit button
+    submitButton.disabled = false;
+    submitButton.innerText = 'Submit';
+  }
 });
+
 
 document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
   document.getElementById('name').value = '';
