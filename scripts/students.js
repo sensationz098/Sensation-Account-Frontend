@@ -142,7 +142,10 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
   const TeacherInput = document.getElementById('TeacherName');
   
   // Get submit button
-  const submitButton = document.getElementById("addStudent2");
+  const submitButton = document.getElementById('addStudent2');
+
+  // Store the current value of date_of_payment to retain it
+  const dateOfPaymentValue = dateOfPaymentInput.value;
 
   // Form field validation
   if (
@@ -177,6 +180,9 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     
     // Reset the form after successful submission
     document.getElementById('addStudentForm').reset();
+    
+    // Restore the value of date_of_payment after reset
+    dateOfPaymentInput.value = dateOfPaymentValue;
   } catch (error) {
     console.error('Error adding student:', error);
     alert('An error occurred while adding the student.');
@@ -186,6 +192,7 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
     submitButton.innerText = 'Submit';
   }
 });
+
 
 
 document.getElementById('addStudentModal').addEventListener('hidden.bs.modal', function () {
