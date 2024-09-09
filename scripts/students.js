@@ -143,7 +143,6 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
 
   // Disable the button to prevent double submission
   submitButton.disabled = true;
-  submitButton.textContent = 'Submitting...'
 
   if (
       nameInput.value.trim() === '' ||
