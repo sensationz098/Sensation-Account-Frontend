@@ -490,3 +490,12 @@ select:hover {
   /* Add your custom hover styles here */
   background-color: #c82333; /* Darker red color on hover */
 }
+
+
+
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

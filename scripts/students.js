@@ -129,7 +129,6 @@ document.getElementById('addCourseForm').addEventListener('submit', handleAddCou
 document.getElementById('addStudentForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
-  // Get form fields
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
   const contactInput = document.getElementById('contact');
@@ -140,14 +139,12 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
   const feeInput = document.getElementById('fee');
   const courseDurationInput = document.getElementById('CourseDuration');
   const TeacherInput = document.getElementById('TeacherName');
-  
-  // Get submit button
   const submitButton = document.getElementById('addStudent2');
 
-  // Store the current value of date_of_payment to retain it
-  const dateOfPaymentValue = dateOfPaymentInput.value;
+  // Disable the button to prevent double submission
+  submitButton.disabled = true;
+  submitButton.textContent = 'Submitting...'
 
-  // Form field validation
   if (
       nameInput.value.trim() === '' ||
       emailInput.value.trim() === '' ||
@@ -161,37 +158,26 @@ document.getElementById('addStudentForm').addEventListener('submit', async funct
       TeacherInput.value.trim() === '' 
   ) {
       alert('Please fill in all the required fields.');
-      return; 
+      submitButton.disabled = false; // Re-enable the button if validation fails
+      return;
   }
-
-  // Disable the submit button to prevent multiple submissions
-  submitButton.disabled = true;
-  submitButton.innerText = 'Submitting...';
 
   try {
-    const addStudentModal = document.getElementById('addStudentModal');
-    const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
-    
-    // Show the modal
-    modalInstance.show();
-    
-    // Call the function to add a student (assuming it makes an API call)
-    await addStudent();
-    
-    // Reset the form after successful submission
-    document.getElementById('addStudentForm').reset();
-    
-    // Restore the value of date_of_payment after reset
-    dateOfPaymentInput.value = dateOfPaymentValue;
+      const addStudentModal = document.getElementById('addStudentModal');
+      const modalInstance = bootstrap.Modal.getInstance(addStudentModal);
+      modalInstance.show(); // Keep the modal open
+      await addStudent(); // Call the function to add the student
+
+      // Re-enable the button after successful submission (if you want it enabled for new submissions)
+      submitButton.disabled = false;
+      
   } catch (error) {
-    console.error('Error adding student:', error);
-    alert('An error occurred while adding the student.');
-  } finally {
-    // Re-enable the submit button
-    submitButton.disabled = false;
-    submitButton.innerText = 'Submit';
+      // In case of any error, re-enable the button
+      console.error("Error adding student:", error);
+      submitButton.disabled = false;
   }
 });
+
 
 
 
@@ -320,7 +306,7 @@ async function addStudent() {
   const stateInput = document.getElementById('state');
   const feeInput = document.getElementById('fee');
   const courseDurationInput = document.getElementById('CourseDuration');
-  const isLifetimeInput = document.getElementById('isLifetime');
+  // const isLifetimeInput = document.getElementById('isLifetime');
   const teacherNameInput = document.getElementById('TeacherName');
   const receiptNumInput = document.getElementById('receiptNum');
 
@@ -339,7 +325,7 @@ async function addStudent() {
     courseEndDate: courseEndDateInput.value,
     fee: feeInput.value,
     CourseDuration: courseDurationInput.value,
-    isLifetime: isLifetimeInput.value,
+    // isLifetime: isLifetimeInput.value,
     Teacher: teacherNameInput.value,
     receipt: receiptNumInput.value
   };
@@ -348,7 +334,7 @@ async function addStudent() {
   localStorage.setItem('lastDateOfPayment', dateOfPaymentInput.value);
   localStorage.setItem('lastAssignedUser', assignedUserInput.value);
 
-  console.log("Selected lifetime value:", isLifetimeInput.value);
+  // console.log("Selected lifetime value:", isLifetimeInput.value);
   console.log("Form Values:", formValues);
 
   try {
