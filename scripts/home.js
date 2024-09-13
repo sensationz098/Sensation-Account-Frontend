@@ -56,7 +56,7 @@ function isTokenExpired(token) {
 
 async function fetchLatestReceipt() {
     try{
-    const resp = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt')
+    const resp = await fetch('https://final-backend-mark1.onrender.com/user/students/latest-receipt')
     if(resp.ok){
         const data = await resp.json()
         latestReceipt = data.latestReceipt;
@@ -90,7 +90,7 @@ async function fetchDataAndDisplay(download = false) {
         
         console.log(`${formattedStartDate} to ${formattedEndDate}`);
 
-        const url = `https://sensationzmediaarts.onrender.com/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+        const url = `https://final-backend-mark1.onrender.com/user/students/testing?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
         const response = await fetch(url, {
             headers: {

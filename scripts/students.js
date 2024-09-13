@@ -32,7 +32,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
     const teacherName = document.getElementById('addteacherName').value;
 
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/teachers/add', {
+        const response = await fetch('https://final-backend-mark1.onrender.com/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ document.getElementById('addTeacherForm').addEventListener('submit', async funct
 
 
 
-fetch('https://sensationzmediaarts.onrender.com/teachers', {
+fetch('https://final-backend-mark1.onrender.com/teachers', {
   headers: {
     'Content-Type': 'application/json',
     'Authorization': token
@@ -85,7 +85,7 @@ fetch('https://sensationzmediaarts.onrender.com/teachers', {
 
 
 
-  fetch('https://sensationzmediaarts.onrender.com/courses', {
+  fetch('https://final-backend-mark1.onrender.com/courses', {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
@@ -313,7 +313,7 @@ async function addStudent() {
   console.log("Form Values:", formValues);
 
   try {
-    const response = await fetch('https://sensationzmediaarts.onrender.com/user/student/add', {
+    const response = await fetch('https://final-backend-mark1.onrender.com/user/student/add', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -366,7 +366,7 @@ async function applyFilters() {
 
 
 async function fetchStudents(startDate = '', endDate = '', selectedUserIds = [], courseStartDate = '', courseEndDate = '', creationDate = '', PaymentDate = '', courseName = '', courseFee = '', contact = '', teacher = '', timing = '', Receipt = '', download = false) {
-  let queryParams = `https://sensationzmediaarts.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}&teacher=${teacher}&timing=${timing}&receipt=${Receipt}`;
+  let queryParams = `https://final-backend-mark1.onrender.com/user/displaydownload?startDate=${startDate}&endDate=${endDate}&usernames=${selectedUserIds.join(',')}&courseStart=${courseStartDate}&courseEnd=${courseEndDate}&creationDate=${creationDate}&PaymentDate=${PaymentDate}&coursename=${courseName}&fees=${courseFee}&contact=${contact}&teacher=${teacher}&timing=${timing}&receipt=${Receipt}`;
   console.log(queryParams);
 
   try {
@@ -476,7 +476,7 @@ async function triggerDownload(students) {
 
 async function fetchUsers() {
   try {
-      const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+      const response = await fetch('https://final-backend-mark1.onrender.com/user/allusers', {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': token
@@ -512,7 +512,7 @@ async function fetchUsers() {
 
 async function fetchUsersForCheckboxes() {
     try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/allusers', {
+        const response = await fetch('https://final-backend-mark1.onrender.com/user/allusers', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -574,7 +574,7 @@ function formatDateRange(previousCourse) {
 
 async function fetchLatestReceipt() {
       try {
-        const response = await fetch('https://sensationzmediaarts.onrender.com/user/students/latest-receipt');
+        const response = await fetch('https://final-backend-mark1.onrender.com/user/students/latest-receipt');
         if (response.ok) {
           const data = await response.json();
           latestReceipt = Number(data.latestReceipt) + 1;
@@ -596,7 +596,7 @@ async function handleExtendCourseButtonClick(studentId) {
         fetchLatestReceipt()
         console.log(studentId)
         clearExtendModel();
-        const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/${studentId}`, {
+        const response = await fetch(`https://final-backend-mark1.onrender.com/user/student/${studentId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -695,7 +695,7 @@ async function handleExtendCourseButtonClick(studentId) {
 async function extendCourse(studentId, additionalMonths, amount, date_of_payment, NewReceipt, email, state ) {
   try {
       
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/extend-course/${studentId}`, {
+      const response = await fetch(`https://final-backend-mark1.onrender.com/user/student/extend-course/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -899,7 +899,7 @@ function handleAddCourseFormSubmit(event) {
 
   const courseName2 = document.getElementById('courseName2').value;
 
-  fetch('https://sensationzmediaarts.onrender.com/courses/add', {
+  fetch('https://final-backend-mark1.onrender.com/courses/add', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -988,7 +988,7 @@ async function handleEditStudent(student) {
 
 function handleDeleteButtonClick(studentId) {
     if (confirm('Are you sure you want to delete this student?')) {
-        fetch(`https://sensationzmediaarts.onrender.com/user/student/delete/${studentId}`, {
+        fetch(`https://final-backend-mark1.onrender.com/user/student/delete/${studentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

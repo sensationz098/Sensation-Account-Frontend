@@ -51,7 +51,7 @@ document.getElementById('editTeacherName').value = studentData.Teacher || '';
 
     // Fetch courses from the API
     try {
-        const response = await fetch(`https://sensationzmediaarts.onrender.com/courses`, {
+        const response = await fetch(`https://final-backend-mark1.onrender.com/courses`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token
@@ -227,7 +227,7 @@ document.getElementById('editTeacherName').value = studentData.Teacher || '';
 
   
     try {
-    const response = await fetch(`https://sensationzmediaarts.onrender.com/teachers`, {
+    const response = await fetch(`https://final-backend-mark1.onrender.com/teachers`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -278,7 +278,7 @@ document.getElementById('editTeacherName').value = studentData.Teacher || '';
 
 
 try {
-    const response = await fetch(`https://sensationzmediaarts.onrender.com/user/allusers`, {
+    const response = await fetch(`https://final-backend-mark1.onrender.com/user/allusers`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -350,7 +350,7 @@ document.getElementById('modalForm').addEventListener('submit', async function(e
 
  
   try {
-      const response = await fetch(`https://sensationzmediaarts.onrender.com/user/student/edit/${studentId}`, {
+      const response = await fetch(`https://final-backend-mark1.onrender.com/user/student/edit/${studentId}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
