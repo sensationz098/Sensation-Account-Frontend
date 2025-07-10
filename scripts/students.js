@@ -1,4 +1,4 @@
-const SERVER_URL = "https://sensation-account-backend.onrender.com";
+const SERVER_URL = "https://sensation-account-backend-1.onrender.com";
 
 let userToken = JSON.parse(localStorage.getItem("Data"));
 let token = userToken.token;

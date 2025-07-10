@@ -1,4 +1,4 @@
-const SERVER_URL = "https://sensation-account-backend.onrender.com";
+const SERVER_URL = "https://sensation-account-backend-1.onrender.com";
 document
   .querySelector("form")
   .addEventListener("submit", async function (event) {
