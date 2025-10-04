@@ -4,7 +4,7 @@ let userToken = JSON.parse(localStorage.getItem("Data"));
 let token = userToken.token;
 let latestReceipt;
 let totalPages;
-
+console.log("Batch JS loaded ✅");
 document.addEventListener("DOMContentLoaded", function () {
   const dateOfPaymentInput = document.getElementById("date_of_payment");
   const assignedUserInput = document.getElementById("assignedUser2");
@@ -26,6 +26,97 @@ document.addEventListener("DOMContentLoaded", function () {
       .getElementById("addStudent")
       .addEventListener("click", fetchLatestReceipt);
   };
+
+  // ✅ Batch Modal Function
+  const addBatchForm = document.getElementById("addBatchForm");
+  const addBatchModal = new bootstrap.Modal(
+    document.getElementById("addBatchModal")
+  );
+
+  addBatchForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const batchName = document.getElementById("batchName").value.trim();
+    console.log("Submitting BatchName:", batchName);
+
+    if (!batchName) {
+      alert("Please enter a batch name.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${SERVER_URL}/user/student/addbatch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token, // or `Bearer ${token}`
+        },
+        body: JSON.stringify({ BatchName: batchName }),
+      });
+
+      const data = await response.json();
+      console.log("Response status:", response.status, "Data:", data);
+
+      if (response.ok) {
+        alert("Batch added successfully!");
+        addBatchForm.reset();
+        addBatchModal.hide();
+        loadBatch(); // refresh batch dropdown
+      } else {
+        alert(data.message || "Failed to add batch.");
+      }
+    } catch (error) {
+      console.error("Error adding batch:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  });
+
+  async function loadBatch() {
+    try {
+      console.log("🔄 Fetching batches...");
+      const res = await fetch(`${SERVER_URL}/user/student/batches`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token, // make sure token is set correctly
+        },
+      });
+
+      console.log("✅ Response status:", res.status);
+
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log("📦 Batches API Response:", data);
+
+      const select = document.getElementById("Btachselect");
+      select.innerHTML = "";
+
+      if (!Array.isArray(data) || data.length === 0) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "No batches found";
+        select.appendChild(option);
+        return;
+      }
+
+      data.forEach((batch) => {
+        const option = document.createElement("option");
+        option.value = batch._id; // store id
+        option.textContent = batch.BatchName; // show name
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error("❌ Error loading batches:", error);
+      const select = document.getElementById("Btachselect");
+      select.innerHTML = `<option value="">Failed to load</option>`;
+    }
+  }
+
+  // ✅ Call immediately
+  loadBatch();
 
   document
     .getElementById("addTeacherForm")
@@ -131,6 +222,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const courseDurationInput = document.getElementById("CourseDuration");
       const TeacherInput = document.getElementById("TeacherName");
       const submitButton = document.getElementById("addStudent2");
+      const classDaysInput = document.getElementById("classes-days");
+      const batchSelectInput = document.getElementById("Btachselect");
 
       submitButton.disabled = true;
 
@@ -144,7 +237,9 @@ document.addEventListener("DOMContentLoaded", function () {
         stateInput.value.trim() === "" ||
         feeInput.value.trim() === "" ||
         courseDurationInput.value.trim() === "" ||
-        TeacherInput.value.trim() === ""
+        TeacherInput.value.trim() === "" ||
+        classDaysInput.value.trim() === "" ||
+        batchSelectInput.value.trim() === ""
       ) {
         alert("Please fill in all the required fields.");
         submitButton.disabled = false;
@@ -179,6 +274,8 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("fee").value = "";
       document.getElementById("CourseDuration").value = "";
       document.getElementById("TeacherName").value = "";
+      document.getElementById("classes-days").value = "";
+      document.getElementById("Btachselect").value = "";
 
       const modalBackdrop = document.querySelector(".modal-backdrop");
       if (modalBackdrop) {
@@ -297,6 +394,9 @@ async function addStudent() {
   const courseDurationInput = document.getElementById("CourseDuration");
   const teacherNameInput = document.getElementById("TeacherName");
   const receiptNumInput = document.getElementById("receiptNum");
+  // new fileds
+  const classDaysInput = document.getElementById("classes-days");
+  const batchSelectInput = document.getElementById("Btachselect");
 
   const contactValue = `${countryCodeInput.value} ${contactInput.value}`;
 
@@ -315,6 +415,8 @@ async function addStudent() {
     CourseDuration: courseDurationInput.value,
     Teacher: teacherNameInput.value,
     receipt: receiptNumInput.value,
+    classessDays: classDaysInput.value,
+    batchStart: batchSelectInput.value,
   };
 
   localStorage.setItem("lastDateOfPayment", dateOfPaymentInput.value);

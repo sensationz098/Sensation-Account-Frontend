@@ -1,622 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Students</title>
-    <link rel="stylesheet" href="./css/students.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-    <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Students</title>
+  <link rel="stylesheet" href="./css/students.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"
-  ></script>
-  
-  
-  
+    crossorigin="anonymous"></script>
+
+
+
   <style>
-    #pagination{
+    #pagination {
       width: 300px;
       height: 50px;
       margin-left: 670px;
       border: 2px solid black;
     }
   </style>
-  
-
-  </head>
-  <body>
-    <div class="document">
 
 
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="./home.html">
-                <img src="./photos/sensationz.png" alt="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <h2 id="username"></h2>
-                    </li>
-                </ul>
-                <button id="addStudent" class="btn btn-outline-success" onclick="openAddStudentModal()"
-                    data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                    Add Student
-                </button>
-                <button id="addCourse" class="btn btn-outline-primary mx-2 add-course-btn""
-                    data-bs-toggle="modal" data-bs-target="#addCourseModal">
-                    Add Course
-                </button>
-                <button id="addTeacher" class="btn btn-outline-danger add-teacher-btn" onclick="openAddTeacherModal()"
-                    data-bs-toggle="modal" data-bs-target="#addTeacherModal">
-                    Add Teacher
-                </button>
-                <form class="d-flex" role="search" id="searchStudent">
-                    <input class="form-control me-2" type="search" id="StudentNameValue" placeholder="Search"
-                        aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">
-                        Search
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
-    
-    
+</head>
 
-      <div class="mid">
-        <div id="mid1">
-          <button id="downloadRep" class="btn btn-outline-success">
-            Download report
+<body>
+  <div class="document">
+
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./home.html">
+          <img src="./photos/sensationz.png" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <h2 id="username"></h2>
+            </li>
+          </ul>
+          <button id="addBtach" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addBatchModal">
+            Add Btach
           </button>
-          <div id="filterDiv">
-            <form id="filtersForm">
+          <button id="addStudent" class="btn btn-outline-success" onclick="openAddStudentModal()" data-bs-toggle="modal"
+            data-bs-target="#addStudentModal">
+            Add Student
+          </button>
+          <button id="addCourse" class="btn btn-outline-primary mx-2 add-course-btn""
+                    data-bs-toggle=" modal" data-bs-target="#addCourseModal">
+            Add Course
+          </button>
+          <button id="addTeacher" class="btn btn-outline-danger add-teacher-btn" onclick="openAddTeacherModal()"
+            data-bs-toggle="modal" data-bs-target="#addTeacherModal">
+            Add Teacher
+          </button>
+          <form class="d-flex" role="search" id="searchStudent">
+            <input class="form-control me-2" type="search" id="StudentNameValue" placeholder="Search"
+              aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
 
-              <button
-              type="button"    
-              class="btn btn-outline-primary"
-              onclick="applyFilters()"
-            >
+
+
+    <div class="mid">
+      <div id="mid1">
+        <button id="downloadRep" class="btn btn-outline-success">
+          Download report
+        </button>
+        <div id="filterDiv">
+          <form id="filtersForm">
+
+            <button type="button" class="btn btn-outline-primary" onclick="applyFilters()">
               Apply Filters
             </button>
-            <button
-              type="button"
-              id="resetFiltersBtn"
-              class="btn btn-outline-secondary"
-              onclick="resetFilters()"
-            >
+            <button type="button" id="resetFiltersBtn" class="btn btn-outline-secondary" onclick="resetFilters()">
               Reset Filters
             </button>
-            
-              <div class="mb-3">
-                <label for="userDropdown" class="form-label"
-                  >Select Users:</label
-                >
-                <div class="dropdown">
-                  <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="userDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Select Users
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="userDropdownMenu" id="userDropdownMenu">
-                    <!-- Users will be dynamically added here -->
-                  </div>
+
+            <div class="mb-3">
+              <label for="userDropdown" class="form-label">Select Users:</label>
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Users
+                </button>
+                <div class="dropdown-menu" aria-labelledby="userDropdownMenu" id="userDropdownMenu">
+                  <!-- Users will be dynamically added here -->
                 </div>
               </div>
+            </div>
 
-              <div class="mb-3">
-                <label for="contactcheck" class="form-label"
-                  >Contact:</label
-                >
-                <input type="number" id="contactcheck" name="contactcheck" />
-              </div>
+            <div class="mb-3">
+              <label for="contactcheck" class="form-label">Contact:</label>
+              <input type="number" id="contactcheck" name="contactcheck" />
+            </div>
 
-              <div class="mb-3">
-                <label for="courseName" class="form-label">Course Name:</label>
-                <select id="courseName" name="courseName">
-                    <option value="">Select a course</option> <!-- Empty option -->
-                </select>
+            <div class="mb-3">
+              <label for="courseName" class="form-label">Course Name:</label>
+              <select id="courseName" name="courseName">
+                <option value="">Select a course</option> <!-- Empty option -->
+              </select>
             </div>
 
 
             <div class="mb-3">
               <label for="Receipt" class="form-label">Receipt :</label>
-              <input type="number" id="Receipt" >
-          </div>
-  
-
-              <div class="mb-3">
-                <label for="PaymentDate" class="form-label"
-                  >Payment Date:</label
-                >
-                <input type="date" id="PaymentDate" name="PaymentDate" />
-              </div>
-
-              <div class="mb-3">
-                <label for="timingSelect" class="form-label"
-                  >Select Timing:</label
-                >
-                <select name="timingSelect" id="timingSelect">
-                  <option value="">Select Timing</option>
-                  <option value="5-6 am (Morning)">Not Confirmed</option>
-                          <option value="5-6 am (Morning)">5-6 am (Morning)</option>
-                          <option value="6-7 am (Morning)">6-7 am (Morning)</option>
-                          <option value="7-8 am (Morning)">7-8 am (Morning)</option>
-                          <option value="8-9 am (Morning)">8-9 am (Morning)</option>
-                          <option value="9-10 am (Morning)">9-10 am (Morning)</option>
-                          <option value="10-11 am (Morning)">10-11 am (Morning)</option>
-                          <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
-                          <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
-                          <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
-                          <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
-                          <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
-                          <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
-                          <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
-                          <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
-                          <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
-                          <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
-                </select>
-              </div>
+              <input type="number" id="Receipt">
+            </div>
 
 
             <div class="mb-3">
-              <label for="teacherSelect" class="form-label"
-                >Select Teacher:</label
-              >
+              <label for="PaymentDate" class="form-label">Payment Date:</label>
+              <input type="date" id="PaymentDate" name="PaymentDate" />
+            </div>
+
+            <div class="mb-3">
+              <label for="timingSelect" class="form-label">Select Timing:</label>
+              <select name="timingSelect" id="timingSelect">
+                <option value="">Select Timing</option>
+                <option value="5-6 am (Morning)">Not Confirmed</option>
+                <option value="5-6 am (Morning)">5-6 am (Morning)</option>
+                <option value="6-7 am (Morning)">6-7 am (Morning)</option>
+                <option value="7-8 am (Morning)">7-8 am (Morning)</option>
+                <option value="8-9 am (Morning)">8-9 am (Morning)</option>
+                <option value="9-10 am (Morning)">9-10 am (Morning)</option>
+                <option value="10-11 am (Morning)">10-11 am (Morning)</option>
+                <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
+                <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
+                <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
+                <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
+                <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
+                <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
+                <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
+                <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
+                <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
+                <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
+              </select>
+            </div>
+
+
+            <div class="mb-3">
+              <label for="teacherSelect" class="form-label">Select Teacher:</label>
               <select name="teacherSelect" id="teacherSelect">
                 <option value="">Select Teachers</option>
               </select>
             </div>
 
 
-              <div class="mb-3">
-                <label for="dateRange" class="form-label">Date Range:</label>
-                <input type="date" id="startDate" name="startDate" /> to
-                <input type="date" id="endDate" name="endDate" />
-              </div>
+            <div class="mb-3">
+              <label for="dateRange" class="form-label">Date Range:</label>
+              <input type="date" id="startDate" name="startDate" /> to
+              <input type="date" id="endDate" name="endDate" />
+            </div>
 
-              <div class="mb-3">
-                <label for="courseStartDate" class="form-label"
-                  >Course Start Date:</label
-                >
-                <input
-                  type="date"
-                  id="courseStartDate"
-                  name="courseStartDate"
-                />
-              </div>
+            <div class="mb-3">
+              <label for="courseStartDate" class="form-label">Course Start Date:</label>
+              <input type="date" id="courseStartDate" name="courseStartDate" />
+            </div>
 
-              <div class="mb-3">
-                <label for="courseEndDate" class="form-label"
-                  >Course End Date:</label
-                >
-                <input type="date" id="courseEndDate" name="courseEndDate" />
-              </div>
+            <div class="mb-3">
+              <label for="courseEndDate" class="form-label">Course End Date:</label>
+              <input type="date" id="courseEndDate" name="courseEndDate" />
+            </div>
 
 
 
-              <div class="mb-3">
-                <label for="created_at" class="form-label"
-                  >Creation Date:</label
-                >
-                <input type="date" id="created_at" name="created_at" />
-              </div>                                                 
+            <div class="mb-3">
+              <label for="created_at" class="form-label">Creation Date:</label>
+              <input type="date" id="created_at" name="created_at" />
+            </div>
 
 
 
 
 
-              <div class="mb-3">
-                <label for="courseFee" class="form-label"
-                  >Course Fee:</label
-                >
-                <input type="number" id="courseFee" name="courseFee" />
-              </div>
+            <div class="mb-3">
+              <label for="courseFee" class="form-label">Course Fee:</label>
+              <input type="number" id="courseFee" name="courseFee" />
+            </div>
 
 
-            </form>
-          </div>
+          </form>
         </div>
+      </div>
 
-        <div id="mid2">
-          
-          <table class="table" id="mainTable">
-            <thead>
-              <tr id="tableHeaders">
-                  <!-- Header cells go here -->
-              </tr>
+      <div id="mid2">
+
+        <table class="table" id="mainTable">
+          <thead>
+            <tr id="tableHeaders">
+              <!-- Header cells go here -->
+            </tr>
           </thead>
           <tbody id="tableBody">
-              <!-- Data rows go here -->
+            <!-- Data rows go here -->
           </tbody>
-          </table>
+        </table>
 
-        
+
+      </div>
+
+      <!-- Add Btach Modal -->
+      <!-- Modal -->
+      <div class="modal fade" id="addBatchModal" tabindex="-1" aria-labelledby="addBatchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- centered vertically -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addBatchModalLabel">Add New Batch</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="addBatchForm">
+                <div class="mb-3">
+                  <label for="batchName" class="form-label">Batch Name</label>
+                  <input type="text" class="form-control" id="batchName" name="batchName" placeholder="Enter batch name"
+                    required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Add Batch</button> <!-- full-width button -->
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <!-- Add Student Modal -->
-        <div
-          class="modal fade"
-          id="addStudentModal"
-          tabindex="-1"
-          aria-labelledby="addStudentModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addStudentModalLabel">
-                  Add Student
-                </h5>
-                <button id="addStudentCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form id="addStudentForm">
-                  <div class="mb-3">
-                    <label for="name" class="form-label">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" required />
+      <!-- Add Student Modal -->
+      <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addStudentModalLabel">
+                Add Student
+              </h5>
+              <button id="addStudentCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="addStudentForm">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required />
                 </div>
-                
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      name="email"
-                      required
-                    />
-                  </div>
 
-
-                  <div class="mb-3">
-                    <label for="contact" class="form-label">Contact:</label>
-                    <div class="input-group">
-                      <select class="form-select" id="countryCode" name="countryCode">
-                        <option value="+91">+91 (India)</option>
-                        <option value="+61">+61 (Australia)</option>
-                        <option value="+973">+973 (Bahrain)</option>
-                        <option value="+55">+55 (Brazil)</option>
-                        <option value="+86">+86 (China)</option>
-                        <option value="+20">+20 (Egypt)</option>
-                        <option value="+251">+251 (Ethiopia)</option>
-                        <option value="+33">+33 (France)</option>
-                        <option value="+49">+49 (Germany)</option>
-                        <option value="+62">+62 (Indonesia)</option>
-                        <option value="+964">+964 (Iraq)</option>
-                        <option value="+98">+98 (Iran)</option>
-                        <option value="+972">+972 (Israel)</option>
-                        <option value="+81">+81 (Japan)</option>
-                        <option value="+965">+965 (Kuwait)</option>
-                        <option value="+961">+961 (Lebanon)</option>
-                        <option value="+218">+218 (Libya)</option>
-                        <option value="+60">+60 (Malaysia)</option>
-                        <option value="+356">+356 (Malta)</option>
-                        <option value="+212">+212 (Morocco)</option>
-                        <option value="+64">+64 (New Zealand)</option>
-                        <option value="+234">+234 (Nigeria)</option>
-                        <option value="+92">+92 (Pakistan)</option>
-                        <option value="+51">+51 (Peru)</option>
-                        <option value="+63">+63 (Philippines)</option>
-                        <option value="+7">+7 (Russia)</option>
-                        <option value="+966">+966 (Saudi Arabia)</option>
-                        <option value="+65">+65 (Singapore)</option>
-                        <option value="+27">+27 (South Africa)</option>
-                        <option value="+82">+82 (South Korea)</option>
-                        <option value="+34">+34 (Spain)</option>
-                        <option value="+46">+46 (Sweden)</option>
-                        <option value="+41">+41 (Switzerland)</option>
-                        <option value="+66">+66 (Thailand)</option>
-                        <option value="+90">+90 (Turkey)</option>
-                        <option value="+971">+971 (United Arab Emirates)</option>
-                        <option value="+44">+44 (United Kingdom)</option>
-                        <option value="+1">+1 (United States)</option>
-                        <option value="+58">+58 (Venezuela)</option>
-                        <option value="+84">+84 (Vietnam)</option>
-                        <option value="+260">+260 (Zambia)</option>
-                        <option value="+263">+263 (Zimbabwe)</option>
-                        <option value="+230">+230 (Mauritius)</option>
-                        <option value="+243">+243 (Congo Africa)</option>
-                        <option value="+977">+977 (Nepal)</option>
-                        <option value="+968">+968 (Oman)</option>
-                        <option value="+009">+009 (Nigeria)</option>
-                        <option value="+227">+227 (Niger)</option>
-                        <option value="+974">+974 (Qatar) </option>
-                    </select>
-                    <input
-                    type="tel"
-                    class="form-control"
-                    id="contact"
-                    name="contact"
-                    pattern="[0-9]{1,10}"
-                    maxlength="10"
-                    required
-                />
-                
-                    </div>
-                    <div class="invalid-feedback">
-                        Please enter a 10-digit number.
-                    </div>
-                </div>       
-                
-                
-                  <div class="mb-3">
-                    <label for="contact" class="form-label">Assigned User:</label>
-                   <select name="assignedUser3" id="assignedUser2">
-                   </select>
-                  </div>
-
-                  <!-- Enrolled Courses Section -->
-                  <div class="mb-3">
-                    <label for="course" class="form-label">Course:</label>
-                    <select name="course" id="selectCourse">
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="timing" class="form-label">Timing:</label>
-                    <select class="form-select" id="timing" name="timing">
-                        <option value="5-6 am (Morning)">Not Confirmed</option>
-                        <option value="5-6 am (Morning)">5-6 am (Morning)</option>
-                        <option value="6-7 am (Morning)">6-7 am (Morning)</option>
-                        <option value="7-8 am (Morning)">7-8 am (Morning)</option>
-                        <option value="8-9 am (Morning)">8-9 am (Morning)</option>
-                        <option value="9-10 am (Morning)">9-10 am (Morning)</option>
-                        <option value="10-11 am (Morning)">10-11 am (Morning)</option>
-                        <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
-                        <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
-                        <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
-                        <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
-                        <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
-                        <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
-                        <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
-                        <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
-                        <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
-                        <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
-                    </select>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email:</label>
+                  <input type="email" class="form-control" id="email" name="email" required />
                 </div>
-                  <div class="mb-3">
-                    <label for="date_of_payment" class="form-label"
-                      >Date of Payment:</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="date_of_payment"
-                      name="date_of_payment"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="courseStartDate" class="form-label"
-                      >Course Start Date:</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="courseStartDate2"
-                      name="courseStartDate"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="CourseDuration" class="form-label"
-                      >Course Duration:</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="CourseDuration"
-                      name="CourseDuration"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="courseEndDate" class="form-label"
-                      >Course End Date:</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="courseEndDate2"
-                      name="courseEndDate"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="TeacherName" class="form-label"
-                      >Teacher:</label
-                    >
-                    <select name="TeacherName" id="TeacherName">
-                      <option value="Not Confirmed">Not Confirmed</option>
+
+
+                <div class="mb-3">
+                  <label for="contact" class="form-label">Contact:</label>
+                  <div class="input-group">
+                    <select class="form-select" id="countryCode" name="countryCode">
+                      <option value="+91">+91 (India)</option>
+                      <option value="+61">+61 (Australia)</option>
+                      <option value="+973">+973 (Bahrain)</option>
+                      <option value="+55">+55 (Brazil)</option>
+                      <option value="+86">+86 (China)</option>
+                      <option value="+20">+20 (Egypt)</option>
+                      <option value="+251">+251 (Ethiopia)</option>
+                      <option value="+33">+33 (France)</option>
+                      <option value="+49">+49 (Germany)</option>
+                      <option value="+62">+62 (Indonesia)</option>
+                      <option value="+964">+964 (Iraq)</option>
+                      <option value="+98">+98 (Iran)</option>
+                      <option value="+972">+972 (Israel)</option>
+                      <option value="+81">+81 (Japan)</option>
+                      <option value="+965">+965 (Kuwait)</option>
+                      <option value="+961">+961 (Lebanon)</option>
+                      <option value="+218">+218 (Libya)</option>
+                      <option value="+60">+60 (Malaysia)</option>
+                      <option value="+356">+356 (Malta)</option>
+                      <option value="+212">+212 (Morocco)</option>
+                      <option value="+64">+64 (New Zealand)</option>
+                      <option value="+234">+234 (Nigeria)</option>
+                      <option value="+92">+92 (Pakistan)</option>
+                      <option value="+51">+51 (Peru)</option>
+                      <option value="+63">+63 (Philippines)</option>
+                      <option value="+7">+7 (Russia)</option>
+                      <option value="+966">+966 (Saudi Arabia)</option>
+                      <option value="+65">+65 (Singapore)</option>
+                      <option value="+27">+27 (South Africa)</option>
+                      <option value="+82">+82 (South Korea)</option>
+                      <option value="+34">+34 (Spain)</option>
+                      <option value="+46">+46 (Sweden)</option>
+                      <option value="+41">+41 (Switzerland)</option>
+                      <option value="+66">+66 (Thailand)</option>
+                      <option value="+90">+90 (Turkey)</option>
+                      <option value="+971">+971 (United Arab Emirates)</option>
+                      <option value="+44">+44 (United Kingdom)</option>
+                      <option value="+1">+1 (United States)</option>
+                      <option value="+58">+58 (Venezuela)</option>
+                      <option value="+84">+84 (Vietnam)</option>
+                      <option value="+260">+260 (Zambia)</option>
+                      <option value="+263">+263 (Zimbabwe)</option>
+                      <option value="+230">+230 (Mauritius)</option>
+                      <option value="+243">+243 (Congo Africa)</option>
+                      <option value="+977">+977 (Nepal)</option>
+                      <option value="+968">+968 (Oman)</option>
+                      <option value="+009">+009 (Nigeria)</option>
+                      <option value="+227">+227 (Niger)</option>
+                      <option value="+974">+974 (Qatar) </option>
                     </select>
+                    <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]{1,10}"
+                      maxlength="10" required />
+
                   </div>
-                  <div class="mb-3">
-                    <label for="fee" class="form-label">Fee:</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="fee"
-                      name="fee"
-                      required
-                    />
+                  <div class="invalid-feedback">
+                    Please enter a 10-digit number.
                   </div>
-                  <div class="mb-3">
-                    <label for="receiptNum" class="form-label">Receipt Number:</label>
-                    <input name="receiptNum" type="number" id="receiptNum">                        
-                  </div>                                                          
-                  <div class="mb-3">
-                    <label for="state" class="form-label">State:</label>
-                    <select name="state" id="state">
-                        <optgroup label="States">
-                            <option value="Andhra Pradesh">Andhra Pradesh</option>
-                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                            <option value="Assam">Assam</option>
-                            <option value="Bihar">Bihar</option>
-                            <option value="Chhattisgarh">Chhattisgarh</option>
-                            <option value="Goa">Goa</option>
-                            <option value="Gujarat">Gujarat</option>
-                            <option value="Haryana">Haryana</option>
-                            <option value="Himachal Pradesh">Himachal Pradesh</option>
-                            <option value="Jharkhand">Jharkhand</option>
-                            <option value="Karnataka">Karnataka</option>
-                            <option value="Kerala">Kerala</option>
-                            <option value="Madhya Pradesh">Madhya Pradesh</option>
-                            <option value="Maharashtra">Maharashtra</option>
-                            <option value="Manipur">Manipur</option>
-                            <option value="Meghalaya">Meghalaya</option>
-                            <option value="Mizoram">Mizoram</option>
-                            <option value="Nagaland">Nagaland</option>
-                            <option value="Odisha">Odisha</option>
-                            <option value="Punjab">Punjab</option>
-                            <option value="Rajasthan">Rajasthan</option>
-                            <option value="Sikkim">Sikkim</option>
-                            <option value="Tamil Nadu">Tamil Nadu</option>
-                            <option value="Telangana">Telangana</option>
-                            <option value="Tripura">Tripura</option>
-                            <option value="Uttar Pradesh">Uttar Pradesh</option>
-                            <option value="Uttarakhand">Uttarakhand</option>
-                            <option value="West Bengal">West Bengal</option>
-                            <option value="Jammu & Kashmir">Jammu & Kashmir</option>
-                        </optgroup>
-                        <optgroup label="Union Territories">
-                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                            <option value="Chandigarh">Chandigarh</option>
-                            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                            <option value="Delhi">Delhi</option>
-                            <option value="Lakshadweep">Lakshadweep</option>
-                            <option value="Ladakh">Ladakh</option>
-                            <option value="Puducherry">Puducherry</option>
-                        </optgroup>
-                    </select>
                 </div>
-                
-                
+
+
+                <div class="mb-3">
+                  <label for="contact" class="form-label">Assigned User:</label>
+                  <select name="assignedUser3" id="assignedUser2">
+                  </select>
+                </div>
+
+                <!-- Enrolled Courses Section -->
+                <div class="mb-3">
+                  <label for="course" class="form-label">Course:</label>
+                  <select name="course" id="selectCourse">
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="days" class="form-label">classes days:</label>
+                  <select class="form-select" id="classes-days" name="classes-days">
+                    <option value="MTF">MTF</option>
+                    <option value="MWF">MWF</option>
+                    <option value="TTS">TTS</option>
+                    <option value="TT">TT</option>
+                    <option value="WF">WF</option>
+                    <option value="SS">SS</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="days" class="form-label">Select Batch Date:</label>
+                  <select class="form-select" id="Btachselect" name="Select Batch">
+                    <option value="">Loading...</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="timing" class="form-label">Timing:</label>
+                  <select class="form-select" id="timing" name="timing">
+                    <option value="5-6 am (Morning)">Not Confirmed</option>
+                    <option value="5-6 am (Morning)">5-6 am (Morning)</option>
+                    <option value="6-7 am (Morning)">6-7 am (Morning)</option>
+                    <option value="7-8 am (Morning)">7-8 am (Morning)</option>
+                    <option value="8-9 am (Morning)">8-9 am (Morning)</option>
+                    <option value="9-10 am (Morning)">9-10 am (Morning)</option>
+                    <option value="10-11 am (Morning)">10-11 am (Morning)</option>
+                    <option value="11 am - 12 pm (Morning)">11 am - 12 pm (Morning)</option>
+                    <option value="12-1 pm (Afternoon)">12-1 pm (Afternoon)</option>
+                    <option value="1-2 pm (Afternoon)">1-2 pm (Afternoon)</option>
+                    <option value="2-3 pm (Afternoon)">2-3 pm (Afternoon)</option>
+                    <option value="3-4 pm (Afternoon)">3-4 pm (Afternoon)</option>
+                    <option value="4-5 pm (Afternoon)">4-5 pm (Afternoon)</option>
+                    <option value="5-6 pm (Evening)">5-6 pm (Evening)</option>
+                    <option value="6-7 pm (Evening)">6-7 pm (Evening)</option>
+                    <option value="7-8 pm (Evening)">7-8 pm (Evening)</option>
+                    <option value="8-9 pm (Evening)">8-9 pm (Evening)</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="date_of_payment" class="form-label">Date of Payment:</label>
+                  <input type="date" class="form-control" id="date_of_payment" name="date_of_payment" required />
+                </div>
+                <div class="mb-3">
+                  <label for="courseStartDate" class="form-label">Course Start Date:</label>
+                  <input type="date" class="form-control" id="courseStartDate2" name="courseStartDate" required />
+                </div>
+                <div class="mb-3">
+                  <label for="CourseDuration" class="form-label">Course Duration:</label>
+                  <input type="number" class="form-control" id="CourseDuration" name="CourseDuration" />
+                </div>
+                <div class="mb-3">
+                  <label for="courseEndDate" class="form-label">Course End Date:</label>
+                  <input type="date" class="form-control" id="courseEndDate2" name="courseEndDate" required />
+                </div>
+                <div class="mb-3">
+                  <label for="TeacherName" class="form-label">Teacher:</label>
+                  <select name="TeacherName" id="TeacherName">
+                    <option value="Not Confirmed">Not Confirmed</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="fee" class="form-label">Fee:</label>
+                  <input type="number" class="form-control" id="fee" name="fee" required />
+                </div>
+                <div class="mb-3">
+                  <label for="receiptNum" class="form-label">Receipt Number:</label>
+                  <input name="receiptNum" type="number" id="receiptNum">
+                </div>
+                <div class="mb-3">
+                  <label for="state" class="form-label">State:</label>
+                  <select name="state" id="state">
+                    <optgroup label="States">
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+                    </optgroup>
+                    <optgroup label="Union Territories">
+                      <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and
+                        Diu
+                      </option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Ladakh">Ladakh</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+
 
                 <button id="addStudent2" class="btn btn-outline-success">
                   Add Student
                 </button>
-                
-                </form>
-              </div>
+
+              </form>
             </div>
           </div>
         </div>
-
-
-        <div class="modal fade" id="extendCourseModal" tabindex="-1" role="dialog" aria-labelledby="extendCourseModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="extendCourseModalLabel">Extend Course</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="additionalMonths">Additional Months</label>
-          <input type="number" class="form-control" id="additionalMonths" required>
-        </div>
-        <div class="form-group">
-          <label for="amount">Amount</label>
-          <input type="number" class="form-control" id="amount" required>
-        </div>
-        <div class="form-group">
-          <label for="dateOfPayment">Date of Payment</label>
-          <input type="date" class="form-control" id="dateOfPayment" required>
-        </div>
 
-        <div class="form-group">
-          <label for="NewReceipt">New Receipt</label>
-          <input type="number" class="form-control" id="NewReceipt" required>
-        </div>
 
-        <div class="form-group">
-          <label for="student_email">Student Email</label>
-          <input class="form-control" id="student_email" required>
-        </div>
+      <div class="modal fade" id="extendCourseModal" tabindex="-1" role="dialog"
+        aria-labelledby="extendCourseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="extendCourseModalLabel">Extend Course</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="additionalMonths">Additional Months</label>
+                <input type="number" class="form-control" id="additionalMonths" required>
+              </div>
+              <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" required>
+              </div>
+              <div class="form-group">
+                <label for="dateOfPayment">Date of Payment</label>
+                <input type="date" class="form-control" id="dateOfPayment" required>
+              </div>
 
-        <div class="form-group">
-          <label for="student_state">Student's State</label>
-          <select name="state" id="student_state">
-            <option value=""></option>
-          </select>
+              <div class="form-group">
+                <label for="NewReceipt">New Receipt</label>
+                <input type="number" class="form-control" id="NewReceipt" required>
+              </div>
+
+              <div class="form-group">
+                <label for="student_email">Student Email</label>
+                <input class="form-control" id="student_email" required>
+              </div>
+
+              <div class="form-group">
+                <label for="student_state">Student's State</label>
+                <select name="state" id="student_state">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="extendCourseBtn">Extend Course</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="extendCourseBtn">Extend Course</button>
-      </div>
-    </div>
-  </div>
-        </div>
 
-        <!-- Add Course Modal -->
-        <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
+      <!-- Add Course Modal -->
+      <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
               <h5 class="modal-title" id="addCourseModalLabel">Add Course</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+            </div>
+            <div class="modal-body">
               <!-- Add your course form here -->
               <form id="addCourseForm">
-                  <div class="mb-3">
-                      <label for="courseName2" class="form-label">Course Name</label>
-                      <input type="text" class="form-control" id="courseName2" required>
-                  </div>
-                  <!-- Add more fields for course details if needed -->
-                  <button type="submit" class="btn btn-primary">Add Course</button>
+                <div class="mb-3">
+                  <label for="courseName2" class="form-label">Course Name</label>
+                  <input type="text" class="form-control" id="courseName2" required>
+                </div>
+                <!-- Add more fields for course details if needed -->
+                <button type="submit" class="btn btn-primary">Add Course</button>
               </form>
+            </div>
           </div>
-      </div>
-  </div>
         </div>
+      </div>
 
-        <!-- Add Teacher Modal -->
-        <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
+      <!-- Add Teacher Modal -->
+      <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
               <h5 class="modal-title" id="addTeacherModalLabel">Add Teacher</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+            </div>
+            <div class="modal-body">
               <!-- Add your teacher form here -->
               <form id="addTeacherForm">
-                  <div class="mb-3">
-                      <label for="teacherName" class="form-label">Teacher Name</label>
-                      <input type="text" class="form-control" id="addteacherName" required>
-                  </div>
-                  <!-- Add more fields for teacher details if needed -->
-                  <button type="submit" class="btn btn-primary">Add Teacher</button>
+                <div class="mb-3">
+                  <label for="teacherName" class="form-label">Teacher Name</label>
+                  <input type="text" class="form-control" id="addteacherName" required>
+                </div>
+                <!-- Add more fields for teacher details if needed -->
+                <button type="submit" class="btn btn-primary">Add Teacher</button>
               </form>
+            </div>
           </div>
-      </div>
-  </div>
         </div>
       </div>
-
-
-
-   <div id="pagination"></div>
-</div>
-      </div>
     </div>
-  </body>
+
+
+
+    <div id="pagination"></div>
+  </div>
+  </div>
+  </div>
+</body>
 
 
 <script src="./scripts/students.js"></script>
