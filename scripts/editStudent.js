@@ -13,6 +13,53 @@ document.addEventListener("DOMContentLoaded", async function () {
     return courses.includes(course) ? course : ""; // If course is available, return the course, else return empty string
   }
 
+  async function loadBatch() {
+    try {
+      console.log("🔄 Fetching batches...");
+      const res = await fetch(`${SERVER_URL}/user/student/batches`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token, // make sure token is set correctly
+        },
+      });
+
+      console.log("✅ Response status:", res.status);
+
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log("📦 Batches API Response:", data);
+
+      const select = document.getElementById("Btachselect");
+      select.innerHTML = "";
+
+      if (!Array.isArray(data) || data.length === 0) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "No batches found";
+        select.appendChild(option);
+        return;
+      }
+
+      data.forEach((batch) => {
+        const option = document.createElement("option");
+        option.value = batch._id; // store id
+        option.textContent = batch.BatchName; // show name
+        select.appendChild(option);
+      });
+    } catch (error) {
+      console.error("❌ Error loading batches:", error);
+      const select = document.getElementById("Btachselect");
+      select.innerHTML = `<option value="">Failed to load</option>`;
+    }
+  }
+
+  // ✅ Call immediately
+  loadBatch();
+
   document.getElementById("editName").value = studentData.name || "";
   document.getElementById("editEmail").value =
     isEmailAvailable(studentData.email) || "";
@@ -374,6 +421,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         fee: document.getElementById("editFee").value,
         CourseDuration: document.getElementById("editCourseDuration").value,
         Teacher: document.getElementById("editTeacherName").value,
+        classesDays: document.getElementById("classes-days").value,
+        batch: document.getElementById("Btachselect").value,
       };
 
       try {
