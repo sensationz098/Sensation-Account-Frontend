@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await res.json();
       console.log("📦 Batches API Response:", data);
 
-      const select = document.getElementById("Btachselect");
+      const select = document.getElementById("editBtachselect");
       select.innerHTML = "";
 
       if (!Array.isArray(data) || data.length === 0) {
