@@ -421,8 +421,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         fee: document.getElementById("editFee").value,
         CourseDuration: document.getElementById("editCourseDuration").value,
         Teacher: document.getElementById("editTeacherName").value,
-        classesDays: document.getElementById("editclasses-days").value,
-        batch: document.getElementById("editBtachselect").value,
+        classessDays: document.getElementById("editclasses-days").value, // ✅ match backend
+        batchStart: document.getElementById("editBtachselect").value, // ✅ match backend
       };
 
       try {
