@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       data.forEach((batch) => {
         const option = document.createElement("option");
-        option.value = batch._id; // store id
+        option.value = batch.BatchName; // store name
         option.textContent = batch.BatchName; // show name
         select.appendChild(option);
       });
